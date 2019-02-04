@@ -133,8 +133,8 @@ $(window).load(function onload() {
 
         itemLoaded() {
             console.debug("Item loaded");
-            console.debug(this.loadedCount);
-            console.debug(this.totalCount);
+            console.debug("Loaded Count", this.loadedCount);
+            console.debug("Total Count", this.totalCount);
             this.loadedCount++;
             loadingMessage.innerHTML = "Loaded " + this.loadedCount + " of " + this.totalCount;
             if (this.loadedCount === this.totalCount) {
