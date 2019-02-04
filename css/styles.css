@@ -49,3 +49,27 @@
     background: url(../img/loader.gif) no-repeat center;
     font: 12px Arial;
 }
+
+#score-screen{
+    height: 60px;
+    font: 32px 'Comic Sans MS', sans-serif;
+    text-shadow: 0 0 2px #000000;
+    color: ghostwhite;
+}
+#score-screen img{
+    opacity: 0.60;
+    top: 10px;
+    position: relative;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+#score-screen #score-container{
+    position: absolute;
+    top: 5px;
+    right: 20px;
+}
+
+#ending-screen{
+    text-align: center;
+}
