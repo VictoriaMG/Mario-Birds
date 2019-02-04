@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Froot Wars</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/Box2dWeb-2.1.a.3.min.js" type="text/javascript"></script>
+    <script src="js/game.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="game-container">
+        <canvas class="game-layer" id="game-canvas" width="640" height="480"></canvas>
+        <div class="game-layer" id="score-screen">
+            <img id="music-toogle" src="img/icons/sound.png">
+            <img src="img/icons/prev.png">
+            <div id="score-container">
+                <span id="score-text">Score: </span>
+                <span id="score-value">0</span>
+            </div>
+        </div>
+        <div class="game-layer" id="start-screen">
+            <img src="img/icons/play.png" alt="Play Game" onclick="game.showLevelScreen()">
+            <br>
+            <img src="img/icons/settings.png" alt="Settings">
+        </div>
+        <div class="game-layer" id="level-select-screen"></div>
+        <div class="game-layer" id="loading-screen">
+            <div id="loading-msg"></div>
+        </div>
+        <div class="game-layer" id="ending-screen">
+            <div>
+                <p id="ending-msg">The Level Is Over</p>
+                <p id="ending-repeat-level-msg">Replay Current Level</p>
+                <p id="ending-next-level-msg">Play Next Level</p>
+                <p id="ending-choose-level-msg">Return to Level Screen</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
