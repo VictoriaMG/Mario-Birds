@@ -67,13 +67,13 @@ $(window).load(function onload() {
             game.currentLevel = {
                 num: num,
                 hero: []
-            }
+            };
             game.updateScore(0);
             const currentLevel = this.data[num];
-            game.currentLevel.backgroundImage = game.loader.loadImage("./../img/backgrounds/" + currentLevel.background + ".png");
-            game.currentLevel.foregroundImage = game.loader.loadImage("./../img/backgrounds/" + currentLevel.foreground + ".png");
-            game.slingshotImage = game.loader.loadImage("./../img/slingshot.png");
-            game.slingshotFrontImage = game.loader.loadImage("./../img/slingshot-front.png");
+            game.currentLevel.backgroundImage = game.loader.loadImage("img/backgrounds/" + currentLevel.background + ".png");
+            game.currentLevel.foregroundImage = game.loader.loadImage("img/backgrounds/" + currentLevel.foreground + ".png");
+            game.slingshotImage = game.loader.loadImage("img/slingshot.png");
+            game.slingshotFrontImage = game.loader.loadImage("img/slingshot-front.png");
             if (game.loader.loaded) {
                 game.start()
             } else {
