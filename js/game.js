@@ -7,6 +7,26 @@ $(window).load(function onload() {
     const scoreScreen = document.getElementById("score-screen");
     const allLayers = document.getElementsByClassName("game-layer");
 
+    const GameState = Object.freeze({
+        INTRO: {}, // – intro: El juego se desplazará alrededor del nivel para mostrarle al
+        //                  usuario todo lo que hay en él.
+        
+        NEXT_HERO: {}, // – load-next-hero: El juego comprueba si hay otro héroe que cargar
+        //                      en la honda. El juego termina cuando ya no hay héroes o los villanos
+        //                      han sido destruidos.
+        
+        WAITING: {}, // – wait-for-firing: El juego se desplaza hacia el área donde está la
+        //                  honda, en espera de que el usuario dispare al héroe.
+        
+        AIMING: {}, // – firing: Tiene lugar cuando el usuario pulsa el héroe, pero antes de
+        //                  que libere el botón del ratón. Se prepara el ángulo de tiro y la altura
+        //                  a la que se lanzará el héroe.
+        
+        FIRED: {} // – fired: Sucede después de que el usuario libera el botón del ratón,
+        //              entonces se habrá lanzado al héroe y el motor de la física actuará
+        //              sobre todo, mientras el usuario sigue la trayectoria del héroe.
+    })
+
     class Game {
 
         constructor() {
@@ -17,41 +37,76 @@ $(window).load(function onload() {
             this.currentLevel = null;
             this.levels = new Levels();
             this.loader = new ResourcesLoader();
-            this.mouse = new Mouse(this); // El mouse pinta en la pantalla osea que necesita recibir la referencia
+            this.mouse = new Mouse(this); // El mouse pinta en la pantalla por lo que que necesita recibir la referencia          
 
-            // Modos posibles
-            // – intro: El juego se desplazará alrededor del nivel para mostrarle al
-            //          usuario todo lo que hay en él.
-            // – load-next-hero: El juego comprueba si hay otro héroe que cargar
-            //          en la honda. El juego termina cuando ya no hay héroes o los villanos
-            //          han sido destruidos.
-            // – wait-for-firing: El juego se desplaza hacia el área donde está la
-            //          honda, en espera de que el usuario dispare al héroe.
-            // – firing: Tiene lugar cuando el usuario pulsa el héroe, pero antes de
-            //          que libere el botón del ratón. Se prepara el ángulo de tiro y la altura
-            //          a la que se lanzará el héroe.
-            // – fired: Sucede después de que el usuario libera el botón del ratón,
-            //          entonces se habrá lanzado al héroe y el motor de la física actuará
-            //          sobre todo, mientras el usuario sigue la trayectoria del héroe.
-            this.mode = "intro";
+            this.mode = GameState.INTRO;
             this.slingshotX = 140;
             this.slingshotY = 280;
+            // Animaciones
             this.offsetLeft = 0;
+            this.minOffset = 0;
+            this.maxOffset = 0;
+            this.maxSpeed = 3;
+            // Variables para el juego
             this.ended = false;
             this.animationFrame = null;
             this.slingshotImage = null;
             this.slingshotFrontImage = null;
-
+            // Mostrar la pantalla de inicio
             startScreen.style.display = "block"
         }
 
         handlePanning() {
-            this.offsetLeft++;
+            switch (this.mode) {
+                case GameState.INTRO:
+                    if (this.panTo(700)) {
+                        this.mode=GameState.NEXT_HERO;
+                    }
+                    break;
+                case GameState.WAITING:
+                    if(this.mouse.dragging){
+                        panTo(this.mouse.x+this.offsetLeft);
+                    }else{
+                        this.panTo(this.slingshotX);
+                    }
+                    break;
+                case GameState.NEXT_HERO:
+                    this.mode = GameState.WAITING;
+                    break;
+                case GameState.AIMING:
+                    this.panTo(this.slingshotX);
+                    break;
+                case GameState.FIRED:
+                    break;
+            }
+        }
+
+
+        panTo(pos){
+            if (Math.abs(pos-this.offsetLeft-this.canvas.width/4) > 0 &&
+                    this.offsetLeft <= this.maxOffset &&
+                    this.offsetLeft>=this.minOffset) {
+                let deltaX = Math.round((pos-this.offsetLeft-this.canvas.width/4)/2);
+                if(deltaX && Math.abs(deltaX)>this.maxSpeed){
+                    deltaX = this.maxSpeed*Math.abs(deltaX)/deltaX;
+                }
+                this.offsetLeft += deltaX;
+            }else{
+                return true;
+            }
+            if (this.offsetLeft < this.minOffset) {
+                this.offsetLeft = this.minOffset;
+                return true;
+            } else if(this.offsetLeft>this.maxOffset){
+                this.offsetLeft = this.maxOffset;
+                return true;
+            }
+            return false;
         }
 
         // Paint method.
-        // It is called from window, so instead of this,
-        // we have to use game variable, stored on the browser window
+        // Se llama desde la ventana cada frame,
+        // por lo que hay que usar la variable game, creada en window
         update() {
             // Background
             game.handlePanning();
