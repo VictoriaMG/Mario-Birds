@@ -31,6 +31,8 @@ function init() {
     createRevoluteJoint();
     //Crear un cuerpo con datos especiales del usuario
     createSpecialBody();
+    //Crear contact listeners y registrar los eventos
+    listenForContact();
 
     setupDebugDraw();
     animate();
@@ -238,4 +240,22 @@ function createSpecialBody() {
     fixtureDef.shape = new b2CircleShape(30 / scale);
 
     var fixture = specialBody.CreateFixture(fixtureDef);
+}
+
+function listenForContact() {
+    var listener = new Box2D.Dynamics.b2ContactListener;
+    listener.PostSolve = function (contact, impulse) {
+        var body1 = contact.GetFixtureA().GetBody();
+        var body2 = contact.GetFixtureB().GetBody();
+
+        //Si cualquiera de los cuerpos es specialBody, reduzca su vida
+
+        if (body1 == specialBody || body2 == specialBody) {
+            var impulseAlongNormal = impulse.normalImpulses[0];
+            specialBody.GetUserData().life -= impulseAlongNormal;
+            console.log("The special body was in a collision with impulse", impulseAlongNormal, "and its life has now become ", specialBody.GetUserData().life);
+
+        }
+    };
+    world.SetContactListener(listener);
 }
