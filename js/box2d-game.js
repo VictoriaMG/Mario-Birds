@@ -2,6 +2,7 @@ let b2Vec2 = Box2D.Common.Math.b2Vec2;
 let b2BodyDef = Box2D.Dynamics.b2BodyDef;
 let b2Body = Box2D.Dynamics.b2Body;
 let b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+//TODO: Revisar esta variable
 let b2Fixture = Box2D.Dynamics.b2Fixture;
 let b2World = Box2D.Dynamics.b2World;
 let b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
@@ -130,22 +131,82 @@ function createComplexBody() {
     bodyDef.position.x = 350 / scale;
     bodyDef.position.y = 50 / scale;
     var body = world.CreateBody(bodyDef);
+
     // Crear primer accesorio, con forma circular
-    var fixtureDef= new b2FixtureDef();
-    fixtureDef.density =1.0;
+
+    var fixtureDef = new b2FixtureDef();
+    fixtureDef.density = 1.0;
     fixtureDef.friction = 0.5;
-    fixtureDef.restitution =0.7;
+    fixtureDef.restitution = 0.7;
     fixtureDef.shape = new b2CircleShape(20 / scale);
     body.CreateFixture(fixtureDef);
+
     // Crear segundo accesorio, con forma Poligonal
+
     fixtureDef.shape = new b2PolygonShape();
-    var points =[
-        new b2Vec2(0, 20/scale),
-        new b2Vec2(40/scale, 50/scale),
-        new b2Vec2(50/scale, 100/scale),
-        new b2Vec2(-50/ scale,100/ scale),
-        new b2Vec2(-40/scale,50/scale)
+    var points = [
+        new b2Vec2(0, 20 / scale),
+        new b2Vec2(40 / scale, 50 / scale),
+        new b2Vec2(50 / scale, 100 / scale),
+        new b2Vec2(-50 / scale, 100 / scale),
+        new b2Vec2(-40 / scale, 50 / scale)
     ]
     fixtureDef.shape.SetAsArray(points, points.length);
     body.CreateFixture(fixtureDef);
+}
+
+function createRevoluteJoint() {
+
+    //Definir el primer cuerpo
+
+    var bodyDef1 = new b2BodyDef;
+    bodyDef1.type = b2Body.b2_dynamicBody;
+    bodyDef1.position.x = 480 / scale;
+    bodyDef1.position.y = 60 / scale;
+    var body1 = world.CreateBody(bodyDef1);
+
+    //Crear el primer accesorio y añadir la forma rectangular al cuerpo
+
+    var fixtureDef1 = new b2FixtureDef;
+    fixtureDef1.density = 1.0;
+    fixtureDef1.friction = 0.5;
+    fixtureDef1.restitution = 0.5;
+    fixtureDef1.shape = new b2PolygonShape;
+    fixtureDef1.shape.SetAsBox(50 / scale, 10 / scale);
+
+    body1.CreateFixture(fixtureDef1);
+
+    //Definir el segundo cuerpo
+
+    var bodyDef2 = new b2BodyDef;
+    bodyDef2.type = b2Body.b2_dynamicBody;
+    bodyDef2.position.x = 470 / scale;
+    bodyDef2.position.y = 50 / scale;
+    var body2 = world.CreateBody(bodyDef2);
+
+    //Crear el segundo accesorio y añadir la forma rectangular al cuerpo
+
+    var fixtureDef2 = new b2FixtureDef;
+    fixtureDef2.density = 1.0;
+    fixtureDef2.friction = 0.5;
+    fixtureDef2.restitution = 0.5;
+    fixtureDef2.shape = new b2PolygonShape;
+    var points = [
+        new b2Vec2(0, 0),
+        new b2Vec2(40 / scale, 50 / scale),
+        new b2Vec2(50 / scale, 100 / scale),
+        new b2Vec2(-50 / scale, 100 / scale),
+        new b2Vec2(-40 / scale, 50 / scale),
+    ];
+
+    fixtureDef2.shape.SetAsArray(points, points.length);
+    body2.CreateFixture(fixtureDef2);
+
+    //Crear una articulacion entre el body1 y el body2
+
+    var jointDef = new b2RevoluteJointDef;
+    var jointCenter = new b2Vec2(470 / scale, 50 / scale);
+
+    jointDef.Initialize(body1, body2, jointCenter);
+    world.CreateJoint(jointDef);
 }
