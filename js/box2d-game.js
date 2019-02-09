@@ -71,6 +71,14 @@ function animate() {
     world.Step(timeStep, velIterations, posIterations);
     world.ClearForces();
     world.DrawDebugData();
+
+    //Matar Special body si muere
+
+    if (specialBody && specialBody.GetUserData().life <= 0) {
+        world.DestroyBody(specialBody);
+        specialBody = undefined;
+        console.log("The special body was destroyed");
+    }
     setTimeout(animate, timeStep);
 }
 
