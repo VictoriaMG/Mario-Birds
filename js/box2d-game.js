@@ -72,6 +72,12 @@ function animate() {
     world.ClearForces();
     world.DrawDebugData();
 
+    //Dibujo personalizado
+
+    if(specialBody){
+        drawSpecialBody();
+    }
+
     //Matar Special body si muere
 
     if (specialBody && specialBody.GetUserData().life <= 0) {
@@ -271,3 +277,39 @@ function listenForContact() {
     };
     world.SetContactListener(listener);
 }
+
+function drawSpecialBody() {
+    //Obtener la posicion y el angulo del cuerpo
+    var position = specialBody.GetPosition();
+    var angle = specialBody.GetAngle();
+
+    //Transladar y girar el eje a la posicion y el angulo del cuerpo
+    context.translate(position.x * scale, position.y * scale);
+    context.rotate(angle);
+
+    //Dibuja una cara circular llena
+    context.fillStyle = "rgb(200,150,250);";
+    context.beginPath();
+    context.arc(0, 0, 30, 0, 2 * Math.PI, false);
+    context.fill();
+
+    //Dibujar dos ojos rectangulares
+    context.fillStyle = "rgb(255,255,255);";
+    context.fillRect(-15, -15, 10, 5);
+    context.fillRect(5, -15, 10, 5);
+
+    //Dibujar un arco hacia arriba o hacia abajo para una sonrisa dependendiendo de la vida
+    context.strokeStyle = "rgb(255,255,255);";
+    context.beginPath();
+    if (specialBody.GetUserData().life > 100) {
+        context.arc(0, 0, 10, Math.PI, 2 * Math.PI, true);
+    } else {
+        context.arc(0, 10, 10, Math.PI, 2 * Math.PI, false);
+    }
+    context.stroke();
+
+    //Transladar y girar el eje de nuevo a la posicion original y el angulo
+    context.rotate(-angle);
+    context.translate(-position.x * scale, -position.y * scale);
+}
+
