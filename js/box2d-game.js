@@ -27,6 +27,8 @@ function init() {
     createCircularBody();
     createSimplePolygonBody();
     createComplexBody();
+    //Unir dos cuerpos mediante una articulacion(revolute join)
+    createRevoluteJoint();
 
     setupDebugDraw();
     animate();
