@@ -79,6 +79,10 @@ function animate() {
         specialBody = undefined;
         console.log("The special body was destroyed");
     }
+
+    //El punto donde destruimos el cuerpo es el lugar perfecto para añadir sonidos efectos y
+    //actualizacion de puntuacion
+
     setTimeout(animate, timeStep);
 }
 
