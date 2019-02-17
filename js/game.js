@@ -398,10 +398,48 @@ var entities = {
             restitution: 0.4,
         }
     },
-    //TODO: Añadir aqui nuevas entidades
     // Tomar la entidad crear un cuerpo Box2D y añadirlo al mundo
     create: function (entity) {
-        //TODO: completar
+        var definition = entities.definitions[entity.name];
+        if (!definition) {
+            console.log("Undefined entity name", entity.name);
+            return;
+        }
+        switch (entity.type) {
+            case "block": // Rectangulos
+                entity.health = definition.fullHealth;
+                entity.fullHealth = definition.fullHealth;
+                entity.shape = "rectangle";
+                entity.sprite = loader.loadImage("images/entities/" + entity.name + ".png");
+                entity.breakSound = game.breakSound[entity.name];
+                box2d.createRectangle(entity, definition);
+                break;
+            case "ground": // Rectangulos simples
+                //No necesitan salud, son destructibles
+                entity.shape = "rectangle";
+                // No necesitan sprite
+                box2d.createRectangle(entity, definition);
+                break;
+            case "hero":	// Circulo simples
+            case "villain": // Pueden ser circulos o rectangulos
+                entity.health = definition.fullHealth;
+                entity.fullHealth = definition.fullHealth;
+                entity.sprite = loader.loadImage("images/entities/" + entity.name + ".png");
+                entity.shape = definition.shape;
+                entity.bounceSound = game.bounceSound;
+                if (definition.shape == "circle") {
+                    entity.radius = definition.radius;
+                    box2d.createCircle(entity, definition);
+                } else if (definition.shape == "rectangle") {
+                    entity.width = definition.width;
+                    entity.height = definition.height;
+                    box2d.createRectangle(entity, definition);
+                }
+                break;
+            default:
+                console.log("Undefined entity type", entity.type);
+                break;
+        }
     },
     // Coge la posicion y la entidad y la dibuja
     draw: function (entity, position, angle) {
