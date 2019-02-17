@@ -331,7 +331,7 @@ $(window).load(function onload() {
         };
 }());
 var levels = {
-    // Nivel de datos. Tiene un array con info acerca de cada nivel
+    // Array de niveles
     data: [
         { // Primer nivel
             foreground: 'desert-foreground',
@@ -380,6 +380,40 @@ var levels = {
         }
         //TODO:Añadir mas niveles aqui - PONER COMA EN CIERRE ANTERIOR
     ],
+    //TODO: Seleccion de niveles aqui
+
+    // Carga todos los datos e imagenes para un nivel especifico
+    load: function (number) {
+        //Inicializar box2d world cuada vez que se carga un nivel
+        box2d.init();
+
+        // Declarar un nuevo objeto de nivel actual
+        game.currentLevel = {number: number, hero: []};
+        game.score = 0;
+        $('#score').html('Score: ' + game.score);
+        game.currentHero = undefined;
+        var level = levels.data[number];
+
+
+        //Cargar el fondo, primer plano y honda
+        game.currentLevel.backgroundImage = loader.loadImage("images/backgrounds/" + level.background + ".png");
+        game.currentLevel.foregroundImage = loader.loadImage("images/backgrounds/" + level.foreground + ".png");
+        game.slingshotImage = loader.loadImage("images/slingshot.png");
+        game.slingshotFrontImage = loader.loadImage("images/slingshot-front.png");
+
+        // Cargar todas las entidades
+        for (var i = level.entities.length - 1; i >= 0; i--) {
+            var entity = level.entities[i];
+            entities.create(entity);
+        };
+
+        //Llamar a game.start() cuando todos los assets se han sido cargados
+        if (loader.loaded) {
+            game.start()
+        } else {
+            loader.onload = game.start;
+        }
+    }
 }
 //Definimos las entidades
 var entities = {
@@ -505,34 +539,34 @@ var box2d = {
         var allowSleep = true; // Objetos entran en reposo cuando quedan dormidos y se excluyen de calculos
         box2d.world = new b2World(gravity, allowSleep);
     },
-        createRectangle: function (entity, definition) {
-            var bodyDef = new b2BodyDef;
-            if (entity.isStatic) {
-                bodyDef.type = b2Body.b2_staticBody;
-            } else {
-                bodyDef.type = b2Body.b2_dynamicBody;
-            }
+    createRectangle: function (entity, definition) {
+        var bodyDef = new b2BodyDef;
+        if (entity.isStatic) {
+            bodyDef.type = b2Body.b2_staticBody;
+        } else {
+            bodyDef.type = b2Body.b2_dynamicBody;
+        }
 
-            bodyDef.position.x = entity.x / box2d.scale;
-            bodyDef.position.y = entity.y / box2d.scale;
-            if (entity.angle) {
-                bodyDef.angle = Math.PI * entity.angle / 180;
-            }
+        bodyDef.position.x = entity.x / box2d.scale;
+        bodyDef.position.y = entity.y / box2d.scale;
+        if (entity.angle) {
+            bodyDef.angle = Math.PI * entity.angle / 180;
+        }
 
-            var fixtureDef = new b2FixtureDef;
-            fixtureDef.density = definition.density;
-            fixtureDef.friction = definition.friction;
-            fixtureDef.restitution = definition.restitution;
+        var fixtureDef = new b2FixtureDef;
+        fixtureDef.density = definition.density;
+        fixtureDef.friction = definition.friction;
+        fixtureDef.restitution = definition.restitution;
 
-            fixtureDef.shape = new b2PolygonShape;
-            fixtureDef.shape.SetAsBox(entity.width / 2 / box2d.scale, entity.height / 2 / box2d.scale);
+        fixtureDef.shape = new b2PolygonShape;
+        fixtureDef.shape.SetAsBox(entity.width / 2 / box2d.scale, entity.height / 2 / box2d.scale);
 
-            var body = box2d.world.CreateBody(bodyDef);
-            body.SetUserData(entity);
+        var body = box2d.world.CreateBody(bodyDef);
+        body.SetUserData(entity);
 
-            var fixture = body.CreateFixture(fixtureDef);
-            return body;
-        },
+        var fixture = body.CreateFixture(fixtureDef);
+        return body;
+    },
     createCircle: function (entity, definition) {
         var bodyDef = new b2BodyDef;
         if (entity.isStatic) {
