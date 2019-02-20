@@ -1,32 +1,32 @@
-#game-container{
+#gamecontainer{
     width: 640px;
     height: 480px;
     background: url(../img/splashscreen.png);
     border: 1px solid black;
 }
 
-.game-layer{
+.gamelayer{
     width: 640px;
     height: 480px;
     position: absolute;
     display: none;
 }
 
-#start-screen{
+#gamestartscreen{
     padding-top: 250px;
     text-align: center;
 }
 
-#start-screen img{
+#gamestartscreen img{
     margin: 10px;
     cursor: pointer;
 }
 
-#level-select-screen{
+#levelselectscreen{
     padding: 150px 0 0 50px
 }
 
-#level-select-screen input{
+#levelselectscreen input{
     margin: 20px;
     cursor: pointer;
     background: url(../img/icons/level.png);
@@ -37,11 +37,11 @@
     border: 0;
 }
 
-#loading-screen{
+#loadingscreen{
     background: rgba(100,100,100,0.5)
 }
 
-#loading-msg{
+#loadingmessage{
     margin-top: 400px;
     text-align: center;
     height: 48px;
@@ -50,13 +50,13 @@
     font: 12px Arial;
 }
 
-#score-screen{
+#scorescreen{
     height: 60px;
     font: 32px 'Comic Sans MS', sans-serif;
     text-shadow: 0 0 2px #000000;
     color: ghostwhite;
 }
-#score-screen img{
+#scorescreen img{
     opacity: 0.60;
     top: 10px;
     position: relative;
@@ -64,12 +64,18 @@
     cursor: pointer;
 }
 
-#score-screen #score-container{
+#scorescreen #score{
     position: absolute;
     top: 5px;
     right: 20px;
 }
 
-#ending-screen{
+#endingscreen{
     text-align: center;
+    /*Extras to make ending screen look nice*/
+    background: rgba(10,10,10,0.75);
+    font: 32px 'Comic Sans MS', sans-serif;
+    text-shadow: 0 0 2px #000000;
+    color: ghostwhite;
+    vertical-align: middle;
 }

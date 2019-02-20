@@ -1,313 +1,19 @@
-$(window).load(function onload() {
-    const startScreen = document.getElementById("start-screen");
-    const levelSelector = document.getElementById("level-select-screen");
-    const loadingScreen = document.getElementById("loading-screen");
-    const loadingMessage = document.getElementById("loading-msg");
-    const endingScreen = document.getElementById("ending-screen");
-    const scoreScreen = document.getElementById("score-screen");
-    const allLayers = document.getElementsByClassName("game-layer");
+// Declaraciones de Box2D
+let b2Vec2 = Box2D.Common.Math.b2Vec2;
+let b2BodyDef = Box2D.Dynamics.b2BodyDef;
+let b2Body = Box2D.Dynamics.b2Body;
+let b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+let b2Fixture = Box2D.Dynamics.b2Fixture;
+let b2World = Box2D.Dynamics.b2World;
+let b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+let b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+let b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
-    const GameState = Object.freeze({
-        INTRO: {}, // – intro: El juego se desplazará alrededor del nivel para mostrarle al
-        //                  usuario todo lo que hay en él.
-
-        NEXT_HERO: {}, // – load-next-hero: El juego comprueba si hay otro héroe que cargar
-        //                      en la honda. El juego termina cuando ya no hay héroes o los villanos
-        //                      han sido destruidos.
-
-        WAITING: {}, // – wait-for-firing: El juego se desplaza hacia el área donde está la
-        //                  honda, en espera de que el usuario dispare al héroe.
-
-        AIMING: {}, // – firing: Tiene lugar cuando el usuario pulsa el héroe, pero antes de
-        //                  que libere el botón del ratón. Se prepara el ángulo de tiro y la altura
-        //                  a la que se lanzará el héroe.
-
-        FIRED: {} // – fired: Sucede después de que el usuario libera el botón del ratón,
-        //              entonces se habrá lanzado al héroe y el motor de la física actuará
-        //              sobre todo, mientras el usuario sigue la trayectoria del héroe.
-    })
-
-    class Game {
-
-        constructor() {
-
-            this.canvas = document.getElementById("game-canvas");
-            this.context = this.canvas.getContext("2d");
-
-            this.currentLevel = null;
-            this.levels = new Levels();
-            this.loader = new ResourcesLoader();
-            this.mouse = new Mouse(this); // El mouse pinta en la pantalla por lo que que necesita recibir la referencia          
-
-            this.mode = GameState.INTRO;
-            this.slingshotX = 140;
-            this.slingshotY = 280;
-            // Animaciones
-            this.offsetLeft = 0;
-            this.minOffset = 0;
-            this.maxOffset = 0;
-            this.maxSpeed = 3;
-            // Variables para el juego
-            this.ended = false;
-            this.animationFrame = null;
-            this.slingshotImage = null;
-            this.slingshotFrontImage = null;
-            // Mostrar la pantalla de inicio
-            startScreen.style.display = "block"
-        }
-
-        handlePanning() {
-            switch (this.mode) {
-                case GameState.INTRO:
-                    if (this.panTo(700)) {
-                        this.mode = GameState.NEXT_HERO;
-                    }
-                    break;
-                case GameState.WAITING:
-                    if (this.mouse.dragging) {
-                        panTo(this.mouse.x + this.offsetLeft);
-                    } else {
-                        this.panTo(this.slingshotX);
-                    }
-                    break;
-                case GameState.NEXT_HERO:
-                    this.mode = GameState.WAITING;
-                    break;
-                case GameState.AIMING:
-                    this.panTo(this.slingshotX);
-                    break;
-                case GameState.FIRED:
-                    break;
-            }
-        }
-
-
-        panTo(pos) {
-            if (Math.abs(pos - this.offsetLeft - this.canvas.width / 4) > 0 &&
-                this.offsetLeft <= this.maxOffset &&
-                this.offsetLeft >= this.minOffset) {
-                let deltaX = Math.round((pos - this.offsetLeft - this.canvas.width / 4) / 2);
-                if (deltaX && Math.abs(deltaX) > this.maxSpeed) {
-                    deltaX = this.maxSpeed * Math.abs(deltaX) / deltaX;
-                }
-                this.offsetLeft += deltaX;
-            } else {
-                return true;
-            }
-            if (this.offsetLeft < this.minOffset) {
-                this.offsetLeft = this.minOffset;
-                return true;
-            } else if (this.offsetLeft > this.maxOffset) {
-                this.offsetLeft = this.maxOffset;
-                return true;
-            }
-            return false;
-        }
-
-        // Paint method.
-        // Se llama desde la ventana cada frame,
-        // por lo que hay que usar la variable game, creada en window
-        update() {
-            // Background
-            game.handlePanning();
-
-            // Personajes
-
-
-            //  Parallax scrolling
-            game.context.drawImage(game.currentLevel.backgroundImage, game.offsetLeft / 4, 0, 640, 480, 0, 0, 640, 480);
-            game.context.drawImage(game.currentLevel.foregroundImage, game.offsetLeft, 0, 640, 480, 0, 0, 640, 480);
-
-            // Tirachinas
-            game.context.drawImage(game.slingshotImage, game.slingshotX - game.offsetLeft, game.slingshotY);
-            game.context.drawImage(game.slingshotFrontImage, game.slingshotX - game.offsetLeft, game.slingshotY)
-
-            if (!game.ended) {
-                game.animationFrame = window.requestAnimationFrame(game.update, game.canvas);
-            }
-        }
-
-        showLevelScreen() {
-            console.log("Show Level Screen")
-            this.hideAll()
-            $(levelSelector).show("slow")
-        }
-
-        hideAll() {
-            [...allLayers].forEach(element => {
-                element.style.display = "none"
-            });
-        }
-
-        updateScore(value) {
-            document.getElementById("score-value").innerText = value
-        }
-
-        start() {
-            console.log("Starting game...");
-            this.hideAll();
-            this.canvas.style.display = "block";
-            scoreScreen.style.display = "block";
-            this.mode = "intro";
-            this.animationFrame = window.requestAnimationFrame(this.update, this.canvas)
-        }
-    }
-
-    class Mouse {
-        constructor(game) {
-            this.x = 0;
-            this.y = 0;
-            this.down = false;
-            this.downX = 0;
-            this.downY = 0;
-            this.dragging = false;
-            $(game.canvas).mousemove(this.mouseMoved)
-            $(game.canvas).mousedown(this.mouseDown)
-            $(game.canvas).mouseup(this.mouseUp)
-            $(game.canvas).mouseout(this.mouseUp)
-        }
-
-        mouseMoved(event) {
-            let offset = $(game.canvas).offset();
-            this.x = event.pageX - offset.left;
-            this.y = event.pageY - offset.top;
-            if (this.down)
-                this.dragging = true;
-        }
-
-        mouseDown(event) {
-            this.down = true;
-            this.downX = this.x;
-            this.downY = this.y;
-            event.originalEvent.preventDefault();
-        }
-
-        mouseUp(event) {
-            this.down = false;
-            this.dragging = false;
-        }
-    }
-
-    class Levels {
-
-        constructor() {
-            this.data = [
-                new LevelData('desert-foreground', 'clouds-background'),
-                new LevelData('desert-foreground', 'clouds-background')
-            ];
-            let html = ""
-            for (let i = 0; i < this.data.length; i++) {
-                const level = this.data[i];
-                html += '<input type="button" value="' + (i + 1) + '">'
-            }
-            levelSelector.innerHTML = html;
-            [...levelSelector.children].forEach((levelButton) => {
-                levelButton.onclick = () => {
-                    console.log("Loading level", levelButton.value)
-                    this.loadLevel(levelButton.value - 1)
-                    levelSelector.style.display = 'none'
-                }
-            })
-        }
-
-        loadLevel(num) {
-            game.currentLevel = {
-                num: num,
-                hero: []
-            };
-            game.updateScore(0);
-            const currentLevel = this.data[num];
-            game.currentLevel.backgroundImage = game.loader.loadImage("img/backgrounds/" + currentLevel.background + ".png");
-            game.currentLevel.foregroundImage = game.loader.loadImage("img/backgrounds/" + currentLevel.foreground + ".png");
-            game.slingshotImage = game.loader.loadImage("img/slingshot.png");
-            game.slingshotFrontImage = game.loader.loadImage("img/slingshot-front.png");
-            if (game.loader.loaded) {
-                game.start()
-            } else {
-                game.loader.onload = game.start()
-            }
-        }
-    }
-
-    class LevelData {
-        constructor(_foreground, _background, _entities = []) {
-            this.foreground = _foreground;
-            this.background = _background;
-            this.entities = _entities;
-        }
-    }
-
-    class ResourcesLoader {
-
-        constructor() {
-
-            this.loaded = false;
-            this.loadedCount = 0;
-            this.totalCount = 0;
-
-            const audio = document.createElement("audio");
-            this.mp3Support = false;
-            this.oggSupport = false;
-
-            if (audio.canPlayType) {
-                this.mp3Support = ("" != audio.canPlayType("audio/mpeg"));
-                this.oggSupport = ("" != audio.canPlayType('audio/ogg; codecs="vorbis"'));
-            }
-            this.soundFileExt = this.oggSupport ? ".ogg" :
-                this.mp3Support ? ".mp3" :
-                    undefined
-        }
-
-        loadImage(url) {
-            this.totalCount++;
-            this.loaded = false;
-            loadingScreen.style.display = "block";
-            const img = new Image();
-            img.src = url
-            img.onload = this.itemLoaded();
-            return img;
-        }
-
-        loadSound(url) {
-            this.totalCount++;
-            this.loaded = false;
-            loadingScreen.style.display = "block";
-            const audio = new Audio();
-            audio.src = url + this.soundFileExt;
-            audio.addEventListener("canplaythrough", this.itemLoaded(), false)
-            return audio;
-        }
-
-        itemLoaded() {
-            console.debug("Item loaded");
-            console.debug("Loaded Count", this.loadedCount);
-            console.debug("Total Count", this.totalCount);
-            this.loadedCount++;
-            loadingMessage.innerHTML = "Loaded " + this.loadedCount + " of " + this.totalCount;
-            if (this.loadedCount === this.totalCount) {
-                this.loaded = true;
-                loadingScreen.style.display = "none";
-                //$(loadingScreen).hide()
-                if (this.onload) {
-                    this.onload();
-                    this.onload = undefined;
-                }
-            }
-        }
-
-    }
-
-    // Game 
-    window.game = null;
-    window.game = new Game();
-
-});
-
-// Preparar requestAnimationFrame y cancelAnimationFrame 
+// Preparamos requestAnimationFrame y cancelAnimationFrame para usarlos
 (function () {
-    let lastTime = 0;
-    const vendors = ['ms', 'moz', 'webkit', 'o'];
-    for (let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
         window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
         window.cancelAnimationFrame =
             window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
@@ -315,12 +21,11 @@ $(window).load(function onload() {
 
     if (!window.requestAnimationFrame)
         window.requestAnimationFrame = function (callback, element) {
-            let currTime = new Date().getTime();
-            let timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            let id = window.setTimeout(function () {
-                    callback(currTime + timeToCall);
-                },
-                timeToCall);
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function () {
+                callback(currTime + timeToCall);
+            }, timeToCall);
             lastTime = currTime + timeToCall;
             return id;
         };
@@ -330,84 +35,643 @@ $(window).load(function onload() {
             clearTimeout(id);
         };
 }());
-var levels = {
-    // Array de niveles
-    data: [
-        { // Primer nivel
+
+// Iniciar el juego tras cargar la pagina
+$(window).load(function () {
+    game.init();
+});
+// Objeto del juego
+let game = {
+    // Inicializa los objetos y precarga otros elementos y la pantalla de inicio
+    init: function () {
+        // Inicializar otros handlers (niveles, cargador de assets, control de raton)
+        levels.init();
+        loader.init();
+        mouse.init();
+
+        // Cargar musica y efectos de sonido
+
+        //"Kindergarten" by Gurdonark
+        //http://ccmixter.org/files/gurdonark/26491 con licencia Creative Commons
+        game.backgroundMusic = loader.loadSound('audio/gurdonark-kindergarten');
+        game.slingshotReleasedSound = loader.loadSound("audio/released");
+        game.bounceSound = loader.loadSound('audio/bounce');
+        game.breakSound = {
+            "glass": loader.loadSound('audio/glassbreak'),
+            "wood": loader.loadSound('audio/woodbreak')
+        };
+
+
+        // Ocultar todas las capas y mostrar la pantalla de inicio
+        $('.gamelayer').hide();
+        $('#gamestartscreen').show();
+
+        // Obtener el canvas y el contexto para poder dibujar en el
+        game.canvas = document.getElementById('gamecanvas');
+        game.context = game.canvas.getContext('2d');
+    },
+
+    startBackgroundMusic: function () {
+        var toggleImage = $("#togglemusic")[0];
+        game.backgroundMusic.play();
+        toggleImage.src = "img/icons/sound.png";
+    },
+    stopBackgroundMusic: function () {
+        var toggleImage = $("#togglemusic")[0];
+        toggleImage.src = "img/icons/nosound.png";
+        game.backgroundMusic.pause();
+        game.backgroundMusic.currentTime = 0; // Resetear la cancion al segundo 0
+    },
+    toggleBackgroundMusic: function () {
+        var toggleImage = $("#togglemusic")[0];
+        if (game.backgroundMusic.paused) {
+            game.backgroundMusic.play();
+            toggleImage.src = "img/icons/sound.png";
+        } else {
+            game.backgroundMusic.pause();
+            $("#togglemusic")[0].src = "img/icons/nosound.png";
+        }
+    },
+    showLevelScreen: function () {
+        $('.gamelayer').hide();
+        $('#levelselectscreen').show('slow');
+    },
+    restartLevel: function () {
+        window.cancelAnimationFrame(game.animationFrame);
+        game.lastUpdateTime = undefined;
+        levels.load(game.currentLevel.number);
+    },
+    startNextLevel: function () {
+        window.cancelAnimationFrame(game.animationFrame);
+        game.lastUpdateTime = undefined;
+        levels.load(game.currentLevel.number + 1);
+    },
+    // Modo de juego
+    mode: "intro",
+    // Coordenadas de la honda
+    slingshotX: 140,
+    slingshotY: 280,
+    start: function () {
+        $('.gamelayer').hide();
+        // Mostrar las capas del juego y la puntuacion
+        $('#gamecanvas').show();
+        $('#scorescreen').show();
+
+        game.startBackgroundMusic();
+
+        game.mode = "intro";
+        game.offsetLeft = 0;
+        game.ended = false;
+        game.animationFrame = window.requestAnimationFrame(game.animate, game.canvas);
+    },
+
+
+    // Velocidad maxima de panoramizacion por fotograma (en pixeles)
+    maxSpeed: 3,
+    // Minimo y maximo del desplazamiento panoramico
+    minOffset: 0,
+    maxOffset: 300,
+    // Desplazamiento panoramico actual
+    offsetLeft: 0,
+    // Puntuacion del juego
+    score: 0,
+
+    // Mover la pantalla hasta newCenter
+    panTo: function (newCenter) {
+        if (Math.abs(newCenter - game.offsetLeft - game.canvas.width / 4) > 0 &&
+            game.offsetLeft <= game.maxOffset && game.offsetLeft >= game.minOffset) {
+
+            var deltaX = Math.round((newCenter - game.offsetLeft - game.canvas.width / 4) / 2);
+            if (deltaX && Math.abs(deltaX) > game.maxSpeed) {
+                deltaX = game.maxSpeed * Math.abs(deltaX) / (deltaX);
+            }
+            game.offsetLeft += deltaX;
+        } else {
+            return true;
+        }
+        if (game.offsetLeft < game.minOffset) {
+            game.offsetLeft = game.minOffset;
+            return true;
+        } else if (game.offsetLeft > game.maxOffset) {
+            game.offsetLeft = game.maxOffset;
+            return true;
+        }
+        return false;
+    },
+    // Contar heroes y villanos restantes
+    countHeroesAndVillains: function () {
+        game.heroes = [];
+        game.villains = [];
+        for (var body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
+            var entity = body.GetUserData();
+            if (entity) {
+                if (entity.type == "hero") {
+                    game.heroes.push(body);
+                } else if (entity.type == "villain") {
+                    game.villains.push(body);
+                }
+            }
+        }
+    },
+    mouseOnCurrentHero: function () {
+        if (!game.currentHero) {
+            return false;
+        }
+        var position = game.currentHero.GetPosition();
+        var distanceSquared = Math.pow(position.x * box2d.scale - mouse.x - game.offsetLeft, 2) + Math.pow(position.y * box2d.scale - mouse.y, 2);
+        var radiusSquared = Math.pow(game.currentHero.GetUserData().radius, 2);
+        return (distanceSquared <= radiusSquared);
+    },
+    handlePanning: function () {
+        // Tras la intro cargamos el siguiente heroe
+        if (game.mode == "intro") {
+            if (game.panTo(700)) {
+                game.mode = "load-next-hero";
+            }
+        }
+        // Modo de espera al disparo
+        if (game.mode == "wait-for-firing") {
+            if (mouse.dragging) {
+                if (game.mouseOnCurrentHero()) {
+                    game.mode = "firing";
+                } else {
+                    game.panTo(mouse.x + game.offsetLeft)
+                }
+            } else {
+                game.panTo(game.slingshotX);
+            }
+        }
+        // Modo disparo. La camara sigue al disparo
+        if (game.mode == "firing") {
+            if (mouse.down) {
+                game.panTo(game.slingshotX);
+                game.currentHero.SetPosition({
+                    x: (mouse.x + game.offsetLeft) / box2d.scale,
+                    y: mouse.y / box2d.scale
+                });
+            } else {
+                game.mode = "fired";
+                game.slingshotReleasedSound.play();
+                var impulseScaleFactor = 0.75;
+
+                // Coordenadas del centro de la honda (donde la banda esta atada)
+                var slingshotCenterX = game.slingshotX + 35;
+                var slingshotCenterY = game.slingshotY + 25;
+                var impulse = new b2Vec2((slingshotCenterX - mouse.x - game.offsetLeft) * impulseScaleFactor, (slingshotCenterY - mouse.y) * impulseScaleFactor);
+                game.currentHero.ApplyImpulse(impulse, game.currentHero.GetWorldCenter());
+            }
+        }
+
+        if (game.mode == "fired") {
+            // Mover la vista donde se encuentra el heroe
+            var heroX = game.currentHero.GetPosition().x * box2d.scale;
+            game.panTo(heroX);
+
+            // Y esperar hasta que termine de moverse o salga de los limites
+            if (!game.currentHero.IsAwake() || heroX < 0 || heroX > game.currentLevel.foregroundImage.width) {
+                // Borrar al heroe disparado
+                box2d.world.DestroyBody(game.currentHero);
+                game.currentHero = undefined;
+                // Y carga el siguiente
+                game.mode = "load-next-hero";
+            }
+        }
+
+
+        if (game.mode == "load-next-hero") {
+            game.countHeroesAndVillains();
+
+            // Comprobar los enemigos restantes
+            if (game.villains.length == 0) {
+                game.mode = "level-success";
+                return;
+            }
+
+            // Comprobar los heroes restantes
+            if (game.heroes.length == 0) {
+                game.mode = "level-failure"
+                return;
+            }
+
+            // Cargar el siguiente heroe y pasar al modo de espera al disparo
+            if (!game.currentHero) {
+                game.currentHero = game.heroes[game.heroes.length - 1];
+                game.currentHero.SetPosition({
+                    x: 180 / box2d.scale,
+                    y: 200 / box2d.scale
+                });
+                game.currentHero.SetLinearVelocity({
+                    x: 0,
+                    y: 0
+                });
+                game.currentHero.SetAngularVelocity(0);
+                game.currentHero.SetAwake(true);
+            } else {
+                // Esperar a que el heroe termine de moverse y se duerma. 
+                // Luego entrar en modo espera al siguiente disparo
+                game.panTo(game.slingshotX);
+                if (!game.currentHero.IsAwake()) {
+                    game.mode = "wait-for-firing";
+                }
+            }
+        }
+        if (game.mode == "level-success" || game.mode == "level-failure") {
+            if (game.panTo(0)) {
+                game.ended = true;
+                game.showEndingScreen();
+            }
+        }
+    },
+    showEndingScreen: function () {
+        game.stopBackgroundMusic();
+        if (game.mode == "level-success") {
+            if (game.currentLevel.number < levels.data.length - 1) {
+                $('#endingmessage').html('Level Complete. Well Done!!!');
+                $("#playnextlevel").show();
+            } else {
+                $('#endingmessage').html('All Levels Complete. Well Done!!!');
+                $("#playnextlevel").hide();
+            }
+        } else if (game.mode == "level-failure") {
+            $('#endingmessage').html('Failed. Play Again?');
+            $("#playnextlevel").hide();
+        }
+
+        $('#endingscreen').show();
+    },
+
+    animate: function () {
+        // Animar el fondo
+        game.handlePanning();
+
+        // Animar el mundo
+        var currentTime = new Date().getTime();
+        var timeStep;
+        if (game.lastUpdateTime) {
+            timeStep = (currentTime - game.lastUpdateTime) / 1000;
+            if (timeStep > 2 / 60) {
+                timeStep = 2 / 60
+            }
+            box2d.step(timeStep);
+        }
+        game.lastUpdateTime = currentTime;
+
+
+        //  Dibujar el fondo con el paralaje
+        game.context.drawImage(game.currentLevel.backgroundImage, game.offsetLeft / 4, 0, 640, 480, 0, 0, 640, 480);
+        game.context.drawImage(game.currentLevel.foregroundImage, game.offsetLeft, 0, 640, 480, 0, 0, 640, 480);
+
+        // Dibujar la honda
+        game.context.drawImage(game.slingshotImage, game.slingshotX - game.offsetLeft, game.slingshotY);
+
+        // Dibujar todos los cuerpos
+        game.drawAllBodies();
+
+        // Dibujar la banda de la honda cuando estamos disparando un heroe
+        if (game.mode == "wait-for-firing" || game.mode == "firing") {
+            game.drawSlingshotBand();
+        }
+
+        // Dibujar el frontal de la honda
+        game.context.drawImage(game.slingshotFrontImage, game.slingshotX - game.offsetLeft, game.slingshotY);
+
+        if (!game.ended) {
+            game.animationFrame = window.requestAnimationFrame(game.animate, game.canvas);
+        }
+    },
+    drawAllBodies: function () {
+        box2d.world.DrawDebugData();
+
+        // Dibujar todos los cuerpos en el lienzo (canvas)
+        for (var body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
+            var entity = body.GetUserData();
+
+            if (entity) {
+                var entityX = body.GetPosition().x * box2d.scale;
+                if (entityX < 0 || entityX > game.currentLevel.foregroundImage.width || (entity.health && entity.health < 0)) {
+                    box2d.world.DestroyBody(body);
+                    if (entity.type == "villain") {
+                        game.score += entity.calories;
+                        $('#score').html('Score: ' + game.score);
+                    }
+                    if (entity.breakSound) {
+                        entity.breakSound.play();
+                    }
+                } else {
+                    entities.draw(entity, body.GetPosition(), body.GetAngle())
+                }
+            }
+        }
+    },
+    drawSlingshotBand: function () {
+        game.context.strokeStyle = "rgb(68,31,11)"; // Color marron oscuro
+        game.context.lineWidth = 6; // Lo dibujamos como una linea gruesa
+
+        // Calculamos el centro del heroe a partir del angulo y el radio
+        var radius = game.currentHero.GetUserData().radius;
+        var heroX = game.currentHero.GetPosition().x * box2d.scale;
+        var heroY = game.currentHero.GetPosition().y * box2d.scale;
+        var angle = Math.atan2(game.slingshotY + 25 - heroY, game.slingshotX + 50 - heroX);
+
+        var heroFarEdgeX = heroX - radius * Math.cos(angle);
+        var heroFarEdgeY = heroY - radius * Math.sin(angle);
+
+
+        game.context.beginPath();
+        // Iniciar la banda desde la parte superior trasera de la honda
+        game.context.moveTo(game.slingshotX + 50 - game.offsetLeft, game.slingshotY + 25);
+
+        // Hasta el centro del heroe
+        game.context.lineTo(heroX - game.offsetLeft, heroY);
+        game.context.stroke();
+
+        // Dibujar al heroe en la banda posterior
+        entities.draw(game.currentHero.GetUserData(), game.currentHero.GetPosition(), game.currentHero.GetAngle());
+
+        game.context.beginPath();
+        // Mover al borde del heroe mas alejado de la parte superior de la honda
+        game.context.moveTo(heroFarEdgeX - game.offsetLeft, heroFarEdgeY);
+
+        // Dibujar la linea de regreso de la honda al lado frontal
+        game.context.lineTo(game.slingshotX - game.offsetLeft + 10, game.slingshotY + 30)
+        game.context.stroke();
+    },
+
+}
+
+let levels = {
+    // Datos de nivel
+    data: [{ // Primer nivel
+        foreground: 'desert-foreground',
+        background: 'clouds-background',
+        entities: [{
+            type: "ground",
+            name: "dirt",
+            x: 500,
+            y: 440,
+            width: 1000,
+            height: 20,
+            isStatic: true
+        },
+            {
+                type: "ground",
+                name: "wood",
+                x: 185,
+                y: 390,
+                width: 30,
+                height: 80,
+                isStatic: true
+            },
+            {
+                type: "block",
+                name: "wood",
+                x: 520,
+                y: 380,
+                angle: 90,
+                width: 100,
+                height: 25
+            },
+            {
+                type: "block",
+                name: "glass",
+                x: 520,
+                y: 280,
+                angle: 90,
+                width: 100,
+                height: 25
+            },
+            {
+                type: "villain",
+                name: "burger",
+                x: 520,
+                y: 205,
+                calories: 590
+            },
+
+            {
+                type: "block",
+                name: "wood",
+                x: 620,
+                y: 380,
+                angle: 90,
+                width: 100,
+                height: 25
+            },
+            {
+                type: "block",
+                name: "glass",
+                x: 620,
+                y: 280,
+                angle: 90,
+                width: 100,
+                height: 25
+            },
+            {
+                type: "villain",
+                name: "fries",
+                x: 620,
+                y: 205,
+                calories: 420
+            },
+
+            {
+                type: "hero",
+                name: "orange",
+                x: 80,
+                y: 405
+            },
+            {
+                type: "hero",
+                name: "apple",
+                x: 140,
+                y: 405
+            },
+        ]
+    },
+        { // Segundo nivel
             foreground: 'desert-foreground',
             background: 'clouds-background',
-            entities: [
-                {type: "ground", name: "dirt", x: 500, y: 440, width: 1000, height: 20, isStatic: true},
-                {type: "ground", name: "wood", x: 185, y: 390, width: 30, height: 80, isStatic: true},
+            entities: [{
+                type: "ground",
+                name: "dirt",
+                x: 500,
+                y: 440,
+                width: 1000,
+                height: 20,
+                isStatic: true
+            },
+                {
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 390,
+                    width: 30,
+                    height: 80,
+                    isStatic: true
+                },
 
-                {type: "block", name: "wood", x: 520, y: 380, angle: 90, width: 100, height: 25},
-                {type: "block", name: "glass", x: 520, y: 280, angle: 90, width: 100, height: 25},
-                {type: "villain", name: "burger", x: 520, y: 205, calories: 590},
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 820,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 720,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 620,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 670,
+                    y: 317.5,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 770,
+                    y: 317.5,
+                    width: 100,
+                    height: 25
+                },
 
-                {type: "block", name: "wood", x: 620, y: 380, angle: 90, width: 100, height: 25},
-                {type: "block", name: "glass", x: 620, y: 280, angle: 90, width: 100, height: 25},
-                {type: "villain", name: "fries", x: 620, y: 205, calories: 420},
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 670,
+                    y: 255,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 770,
+                    y: 255,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 720,
+                    y: 192.5,
+                    width: 100,
+                    height: 25
+                },
 
-                {type: "hero", name: "orange", x: 80, y: 405},
-                {type: "hero", name: "apple", x: 140, y: 405},
-            ]
-        },
-        {   // Segundo nivel
-            foreground: 'Egip_BG',
-            background: 'Egip_BG',
-            entities: [
-                {type: "ground", name: "dirt", x: 500, y: 440, width: 1000, height: 20, isStatic: true},
-                {type: "ground", name: "wood", x: 185, y: 390, width: 30, height: 80, isStatic: true},
+                {
+                    type: "villain",
+                    name: "burger",
+                    x: 715,
+                    y: 155,
+                    calories: 590
+                },
+                {
+                    type: "villain",
+                    name: "fries",
+                    x: 670,
+                    y: 405,
+                    calories: 420
+                },
+                {
+                    type: "villain",
+                    name: "sodacan",
+                    x: 765,
+                    y: 400,
+                    calories: 150
+                },
 
-                {type: "block", name: "wood", x: 820, y: 380, angle: 90, width: 100, height: 25},
-                {type: "block", name: "wood", x: 720, y: 380, angle: 90, width: 100, height: 25},
-                {type: "block", name: "wood", x: 620, y: 380, angle: 90, width: 100, height: 25},
-                {type: "block", name: "glass", x: 670, y: 317.5, width: 100, height: 25},
-                {type: "block", name: "glass", x: 770, y: 317.5, width: 100, height: 25},
-
-                {type: "block", name: "glass", x: 670, y: 255, angle: 90, width: 100, height: 25},
-                {type: "block", name: "glass", x: 770, y: 255, angle: 90, width: 100, height: 25},
-                {type: "block", name: "wood", x: 720, y: 192.5, width: 100, height: 25},
-
-                {type: "villain", name: "burger", x: 715, y: 155, calories: 590},
-                {type: "villain", name: "fries", x: 670, y: 405, calories: 420},
-                {type: "villain", name: "sodacan", x: 765, y: 400, calories: 150},
-
-                {type: "hero", name: "strawberry", x: 30, y: 415},
-                {type: "hero", name: "orange", x: 80, y: 405},
-                {type: "hero", name: "apple", x: 140, y: 405},
+                {
+                    type: "hero",
+                    name: "strawberry",
+                    x: 30,
+                    y: 415
+                },
+                {
+                    type: "hero",
+                    name: "orange",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "apple",
+                    x: 140,
+                    y: 405
+                },
             ]
         }
-        //TODO:Añadir mas niveles aqui - PONER COMA EN CIERRE ANTERIOR
     ],
-    //TODO: Seleccion de niveles aqui
 
-    // Carga todos los datos e imagenes para un nivel especifico
+    // Inicializar la pantalla de seleccion de nivel
+    init: function () {
+        var html = "";
+        for (var i = 0; i < levels.data.length; i++) {
+            var level = levels.data[i];
+            html += '<input type="button" value="' + (i + 1) + '">';
+        }
+        ;
+        $('#levelselectscreen').html(html);
+
+        // Preparar el boton para que cargue el nivel
+        $('#levelselectscreen input').click(function () {
+            levels.load(this.value - 1);
+            $('#levelselectscreen').hide();
+        });
+    },
+
+    // Cargar datos e imagenes de un nivel en especifico
     load: function (number) {
-        //Inicializar box2d world cuada vez que se carga un nivel
+        // Inicializar box2d
         box2d.init();
 
-        // Declarar un nuevo objeto de nivel actual
-        game.currentLevel = {number: number, hero: []};
+        // Preparar el nuevo nivel
+        game.currentLevel = {
+            number: number,
+            hero: []
+        };
         game.score = 0;
         $('#score').html('Score: ' + game.score);
         game.currentHero = undefined;
         var level = levels.data[number];
 
 
-        //Cargar el fondo, primer plano y honda
-        game.currentLevel.backgroundImage = loader.loadImage("images/backgrounds/" + level.background + ".png");
-        game.currentLevel.foregroundImage = loader.loadImage("images/backgrounds/" + level.foreground + ".png");
-        game.slingshotImage = loader.loadImage("images/slingshot.png");
-        game.slingshotFrontImage = loader.loadImage("images/slingshot-front.png");
+        // Cargar las imagenes de fondo, primer plano y honda
+        game.currentLevel.backgroundImage = loader.loadImage("img/backgrounds/" + level.background + ".png");
+        game.currentLevel.foregroundImage = loader.loadImage("img/backgrounds/" + level.foreground + ".png");
+        game.slingshotImage = loader.loadImage("img/slingshot.png");
+        game.slingshotFrontImage = loader.loadImage("img/slingshot-front.png");
 
         // Cargar todas las entidades
         for (var i = level.entities.length - 1; i >= 0; i--) {
             var entity = level.entities[i];
             entities.create(entity);
-        };
+        }
+        ;
 
-        //Llamar a game.start() cuando todos los assets se han sido cargados
+        // Iniciar el juego cuando los assets se hayan cargado
         if (loader.loaded) {
             game.start()
         } else {
@@ -415,17 +679,17 @@ var levels = {
         }
     }
 }
-//Definimos las entidades
-var entities = {
+
+let entities = {
     definitions: {
         "glass": {
-            fullHealth: 200,
+            fullHealth: 100,
             density: 2.4,
             friction: 0.4,
             restitution: 0.15,
         },
         "wood": {
-            fullHealth: 900,
+            fullHealth: 500,
             density: 0.7,
             friction: 0.4,
             restitution: 0.4,
@@ -481,9 +745,9 @@ var entities = {
             density: 2.0,
             friction: 0.5,
             restitution: 0.4,
-        }
+        },
     },
-    // Tomar la entidad crear un cuerpo Box2D y añadirlo al mundo
+    // Crear una entidad a partir de su correspondiente cuerpo box2d, y annadirlo al mundo
     create: function (entity) {
         var definition = entities.definitions[entity.name];
         if (!definition) {
@@ -495,21 +759,21 @@ var entities = {
                 entity.health = definition.fullHealth;
                 entity.fullHealth = definition.fullHealth;
                 entity.shape = "rectangle";
-                entity.sprite = loader.loadImage("images/entities/" + entity.name + ".png");
+                entity.sprite = loader.loadImage("img/entities/" + entity.name + ".png");
                 entity.breakSound = game.breakSound[entity.name];
                 box2d.createRectangle(entity, definition);
                 break;
-            case "ground": // Rectangulos simples
-                //No necesitan salud, son destructibles
+            case "ground": // Rectangulos
+                // No necesita salud porque es indestructible
                 entity.shape = "rectangle";
-                // No necesitan sprite
+                // No necesita sprites porque no se dibujan
                 box2d.createRectangle(entity, definition);
                 break;
-            case "hero":	// Circulo simples
+            case "hero": // Circulos simples
             case "villain": // Pueden ser circulos o rectangulos
                 entity.health = definition.fullHealth;
                 entity.fullHealth = definition.fullHealth;
-                entity.sprite = loader.loadImage("images/entities/" + entity.name + ".png");
+                entity.sprite = loader.loadImage("img/entities/" + entity.name + ".png");
                 entity.shape = definition.shape;
                 entity.bounceSound = game.bounceSound;
                 if (definition.shape == "circle") {
@@ -526,18 +790,91 @@ var entities = {
                 break;
         }
     },
-    // Coge la posicion y la entidad y la dibuja
+
+    // Dibujar una entidad dada su posicion y angulo
     draw: function (entity, position, angle) {
-        //TODO: completar
+        game.context.translate(position.x * box2d.scale - game.offsetLeft, position.y * box2d.scale);
+        game.context.rotate(angle);
+        switch (entity.type) {
+            case "block":
+                game.context.drawImage(entity.sprite, 0, 0, entity.sprite.width, entity.sprite.height,
+                    -entity.width / 2 - 1, -entity.height / 2 - 1, entity.width + 2, entity.height + 2);
+                break;
+            case "villain":
+            case "hero":
+                if (entity.shape == "circle") {
+                    game.context.drawImage(entity.sprite, 0, 0, entity.sprite.width, entity.sprite.height,
+                        -entity.radius - 1, -entity.radius - 1, entity.radius * 2 + 2, entity.radius * 2 + 2);
+                } else if (entity.shape == "rectangle") {
+                    game.context.drawImage(entity.sprite, 0, 0, entity.sprite.width, entity.sprite.height,
+                        -entity.width / 2 - 1, -entity.height / 2 - 1, entity.width + 2, entity.height + 2);
+                }
+                break;
+            case "ground":
+                // El suelo y la honda se dibujan por separado..
+                break;
+        }
+
+        game.context.rotate(-angle);
+        game.context.translate(-position.x * box2d.scale + game.offsetLeft, -position.y * box2d.scale);
     }
+
 }
-var box2d = {
+
+let box2d = {
     scale: 30,
     init: function () {
-        //  Configurar el mundo de box2d que hara la mayoria de los calculos de fisica
-        var gravity = new b2Vec2(0, 9.8); //Gravedad = 9,8
-        var allowSleep = true; // Objetos entran en reposo cuando quedan dormidos y se excluyen de calculos
+        // Preparar el mundo
+        var gravity = new b2Vec2(0, 9.8); // Declarar la gravedad
+        var allowSleep = true; // Permitir que los objetos en reposo se duerman para aumentar la velocidad de la simulacion
         box2d.world = new b2World(gravity, allowSleep);
+
+        // Configurar dibujos de depuracion
+        var debugContext = document.getElementById('debugcanvas').getContext('2d');
+        var debugDraw = new b2DebugDraw();
+        debugDraw.SetSprite(debugContext);
+        debugDraw.SetDrawScale(box2d.scale);
+        debugDraw.SetFillAlpha(0.3);
+        debugDraw.SetLineThickness(1.0);
+        debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+        box2d.world.SetDebugDraw(debugDraw);
+
+        var listener = new Box2D.Dynamics.b2ContactListener;
+        listener.PostSolve = function (contact, impulse) {
+            var body1 = contact.GetFixtureA().GetBody();
+            var body2 = contact.GetFixtureB().GetBody();
+            var entity1 = body1.GetUserData();
+            var entity2 = body2.GetUserData();
+
+            var impulseAlongNormal = Math.abs(impulse.normalImpulses[0]);
+            // Este listener es llamado con mucha frecuencia... 
+            // Filtra los impulsos muy pequeños. 5 es un valor apropiado para este filtro
+            if (impulseAlongNormal > 5) {
+                // Si el objeto tiene salud, debe reducirse por el valor del impulso
+                if (entity1.health) {
+                    entity1.health -= impulseAlongNormal;
+                }
+
+                if (entity2.health) {
+                    entity2.health -= impulseAlongNormal;
+                }
+
+                // Si los objetos tienen un sonido, reproducirlos
+                if (entity1.bounceSound) {
+                    entity1.bounceSound.play();
+                }
+
+                if (entity2.bounceSound) {
+                    entity2.bounceSound.play();
+                }
+            }
+        };
+        box2d.world.SetContactListener(listener);
+    },
+    step: function (timeStep) {
+        // Iteraciones de la velocidad = 8
+        // Iteraciones de posicion = 3
+        box2d.world.Step(timeStep, 8, 3);
     },
     createRectangle: function (entity, definition) {
         var bodyDef = new b2BodyDef;
@@ -567,6 +904,7 @@ var box2d = {
         var fixture = body.CreateFixture(fixtureDef);
         return body;
     },
+
     createCircle: function (entity, definition) {
         var bodyDef = new b2BodyDef;
         if (entity.isStatic) {
@@ -594,4 +932,93 @@ var box2d = {
         var fixture = body.CreateFixture(fixtureDef);
         return body;
     },
+}
+
+let loader = {
+    loaded: true,
+    loadedCount: 0, // Assets cargados
+    totalCount: 0, // Total de assets a cargar
+
+    init: function () {
+        // Comprobar soporte de sonido
+        var mp3Support, oggSupport;
+        var audio = document.createElement('audio');
+        if (audio.canPlayType) {
+            // canPlayType() devuelve: "", "maybe" o "probably"
+            mp3Support = "" !== audio.canPlayType('audio/mpeg');
+            oggSupport = "" !== audio.canPlayType('audio/ogg; codecs="vorbis"');
+        } else {
+            // Audio no soportado
+            mp3Support = false;
+            oggSupport = false;
+        }
+
+        // Comprobar primero .ogg, luego .mp3 y sino, fijar a undefined
+        loader.soundFileExtn = oggSupport ? ".ogg" : mp3Support ? ".mp3" : undefined;
+    },
+    loadImage: function (url) {
+        this.totalCount++;
+        this.loaded = false;
+        $('#loadingscreen').show();
+        var image = new Image();
+        image.src = url;
+        image.onload = loader.itemLoaded;
+        return image;
+    },
+    soundFileExtn: ".ogg",
+    loadSound: function (url) {
+        this.totalCount++;
+        this.loaded = false;
+        $('#loadingscreen').show();
+        var audio = new Audio();
+        audio.src = url + loader.soundFileExtn;
+        audio.addEventListener("canplaythrough", loader.itemLoaded, false);
+        return audio;
+    },
+    itemLoaded: function (e) {
+        loader.loadedCount++;
+        $('#loadingmessage').html('Loading ' + loader.loadedCount + ' of ' + loader.totalCount + '...');
+        if (loader.loadedCount === loader.totalCount) {
+            loader.loaded = true;
+            loader.loadedCount = 0;
+            loader.totalCount = 0;
+            $('#loadingscreen').hide();
+            if (loader.onload) {
+                loader.onload();
+                loader.onload = undefined;
+            }
+        }
+    }
+};
+let mouse = {
+    x: 0,
+    y: 0,
+    down: false,
+    init: function () {
+        $('#gamecanvas').mousemove(mouse.mousemovehandler);
+        $('#gamecanvas').mousedown(mouse.mousedownhandler);
+        $('#gamecanvas').mouseup(mouse.mouseuphandler);
+        $('#gamecanvas').mouseout(mouse.mouseuphandler);
+    },
+    mousemovehandler: function (ev) {
+        var offset = $('#gamecanvas').offset();
+
+        mouse.x = ev.pageX - offset.left;
+        mouse.y = ev.pageY - offset.top;
+
+        if (mouse.down) {
+            mouse.dragging = true;
+        }
+    },
+    mousedownhandler: function (ev) {
+        mouse.down = true;
+        mouse.downX = mouse.x;
+        mouse.downY = mouse.y;
+        ev.originalEvent.preventDefault();
+
+    },
+    mouseuphandler: function (ev) {
+        mouse.down = false;
+        mouse.dragging = false;
+    }
 }
