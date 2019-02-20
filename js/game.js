@@ -11,9 +11,9 @@ let b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
 // Preparamos requestAnimationFrame y cancelAnimationFrame para usarlos
 (function () {
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    let lastTime = 0;
+    const vendors = ['ms', 'moz', 'webkit', 'o'];
+    for (let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
         window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
         window.cancelAnimationFrame =
             window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
@@ -21,9 +21,10 @@ let b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
     if (!window.requestAnimationFrame)
         window.requestAnimationFrame = function (callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function () {
+            // El parametro element no se usa
+            const currTime = new Date().getTime();
+            let timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            const id = window.setTimeout(function () {
                 callback(currTime + timeToCall);
             }, timeToCall);
             lastTime = currTime + timeToCall;
@@ -72,7 +73,7 @@ let game = {
     },
 
     startBackgroundMusic: function () {
-        var toggleImage = $("#togglemusic")[0];
+        const toggleImage = $("#togglemusic")[0];
         game.backgroundMusic.play();
         toggleImage.src = "img/icons/sound.png";
     },
@@ -83,13 +84,13 @@ let game = {
         game.backgroundMusic.currentTime = 0; // Resetear la cancion al segundo 0
     },
     toggleBackgroundMusic: function () {
-        var toggleImage = $("#togglemusic")[0];
+        const toggleImage = $("#togglemusic")[0];
         if (game.backgroundMusic.paused) {
             game.backgroundMusic.play();
             toggleImage.src = "img/icons/sound.png";
         } else {
             game.backgroundMusic.pause();
-            $("#togglemusic")[0].src = "img/icons/nosound.png";
+            toggleImage.src = "img/icons/nosound.png";
         }
     },
     showLevelScreen: function () {
@@ -141,7 +142,7 @@ let game = {
         if (Math.abs(newCenter - game.offsetLeft - game.canvas.width / 4) > 0 &&
             game.offsetLeft <= game.maxOffset && game.offsetLeft >= game.minOffset) {
 
-            var deltaX = Math.round((newCenter - game.offsetLeft - game.canvas.width / 4) / 2);
+            let deltaX = Math.round((newCenter - game.offsetLeft - game.canvas.width / 4) / 2);
             if (deltaX && Math.abs(deltaX) > game.maxSpeed) {
                 deltaX = game.maxSpeed * Math.abs(deltaX) / (deltaX);
             }
@@ -162,12 +163,12 @@ let game = {
     countHeroesAndVillains: function () {
         game.heroes = [];
         game.villains = [];
-        for (var body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
-            var entity = body.GetUserData();
+        for (let body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
+            const entity = body.GetUserData();
             if (entity) {
-                if (entity.type == "hero") {
+                if (entity.type === "hero") {
                     game.heroes.push(body);
-                } else if (entity.type == "villain") {
+                } else if (entity.type === "villain") {
                     game.villains.push(body);
                 }
             }
@@ -177,20 +178,20 @@ let game = {
         if (!game.currentHero) {
             return false;
         }
-        var position = game.currentHero.GetPosition();
-        var distanceSquared = Math.pow(position.x * box2d.scale - mouse.x - game.offsetLeft, 2) + Math.pow(position.y * box2d.scale - mouse.y, 2);
-        var radiusSquared = Math.pow(game.currentHero.GetUserData().radius, 2);
+        const position = game.currentHero.GetPosition();
+        const distanceSquared = Math.pow(position.x * box2d.scale - mouse.x - game.offsetLeft, 2) + Math.pow(position.y * box2d.scale - mouse.y, 2);
+        const radiusSquared = Math.pow(game.currentHero.GetUserData().radius, 2);
         return (distanceSquared <= radiusSquared);
     },
     handlePanning: function () {
         // Tras la intro cargamos el siguiente heroe
-        if (game.mode == "intro") {
+        if (game.mode === "intro") {
             if (game.panTo(700)) {
                 game.mode = "load-next-hero";
             }
         }
         // Modo de espera al disparo
-        if (game.mode == "wait-for-firing") {
+        if (game.mode === "wait-for-firing") {
             if (mouse.dragging) {
                 if (game.mouseOnCurrentHero()) {
                     game.mode = "firing";
@@ -202,7 +203,7 @@ let game = {
             }
         }
         // Modo disparo. La camara sigue al disparo
-        if (game.mode == "firing") {
+        if (game.mode === "firing") {
             if (mouse.down) {
                 game.panTo(game.slingshotX);
                 game.currentHero.SetPosition({
@@ -212,17 +213,17 @@ let game = {
             } else {
                 game.mode = "fired";
                 game.slingshotReleasedSound.play();
-                var impulseScaleFactor = 0.75;
+                const impulseScaleFactor = 0.75;
 
                 // Coordenadas del centro de la honda (donde la banda esta atada)
-                var slingshotCenterX = game.slingshotX + 35;
-                var slingshotCenterY = game.slingshotY + 25;
-                var impulse = new b2Vec2((slingshotCenterX - mouse.x - game.offsetLeft) * impulseScaleFactor, (slingshotCenterY - mouse.y) * impulseScaleFactor);
+                const slingshotCenterX = game.slingshotX + 35;
+                const slingshotCenterY = game.slingshotY + 25;
+                const impulse = new b2Vec2((slingshotCenterX - mouse.x - game.offsetLeft) * impulseScaleFactor, (slingshotCenterY - mouse.y) * impulseScaleFactor);
                 game.currentHero.ApplyImpulse(impulse, game.currentHero.GetWorldCenter());
             }
         }
 
-        if (game.mode == "fired") {
+        if (game.mode === "fired") {
             // Mover la vista donde se encuentra el heroe
             var heroX = game.currentHero.GetPosition().x * box2d.scale;
             game.panTo(heroX);
@@ -238,18 +239,18 @@ let game = {
         }
 
 
-        if (game.mode == "load-next-hero") {
+        if (game.mode === "load-next-hero") {
             game.countHeroesAndVillains();
 
             // Comprobar los enemigos restantes
-            if (game.villains.length == 0) {
+            if (game.villains.length === 0) {
                 game.mode = "level-success";
                 return;
             }
 
             // Comprobar los heroes restantes
-            if (game.heroes.length == 0) {
-                game.mode = "level-failure"
+            if (game.heroes.length === 0) {
+                game.mode = "level-failure";
                 return;
             }
 
@@ -275,7 +276,7 @@ let game = {
                 }
             }
         }
-        if (game.mode == "level-success" || game.mode == "level-failure") {
+        if (game.mode === "level-success" || game.mode === "level-failure") {
             if (game.panTo(0)) {
                 game.ended = true;
                 game.showEndingScreen();
@@ -284,7 +285,7 @@ let game = {
     },
     showEndingScreen: function () {
         game.stopBackgroundMusic();
-        if (game.mode == "level-success") {
+        if (game.mode === "level-success") {
             if (game.currentLevel.number < levels.data.length - 1) {
                 $('#endingmessage').html('Level Complete. Well Done!!!');
                 $("#playnextlevel").show();
@@ -292,7 +293,7 @@ let game = {
                 $('#endingmessage').html('All Levels Complete. Well Done!!!');
                 $("#playnextlevel").hide();
             }
-        } else if (game.mode == "level-failure") {
+        } else if (game.mode === "level-failure") {
             $('#endingmessage').html('Failed. Play Again?');
             $("#playnextlevel").hide();
         }
@@ -305,8 +306,8 @@ let game = {
         game.handlePanning();
 
         // Animar el mundo
-        var currentTime = new Date().getTime();
-        var timeStep;
+        const currentTime = new Date().getTime();
+        let timeStep;
         if (game.lastUpdateTime) {
             timeStep = (currentTime - game.lastUpdateTime) / 1000;
             if (timeStep > 2 / 60) {
@@ -328,7 +329,7 @@ let game = {
         game.drawAllBodies();
 
         // Dibujar la banda de la honda cuando estamos disparando un heroe
-        if (game.mode == "wait-for-firing" || game.mode == "firing") {
+        if (game.mode === "wait-for-firing" || game.mode === "firing") {
             game.drawSlingshotBand();
         }
 
@@ -343,14 +344,14 @@ let game = {
         box2d.world.DrawDebugData();
 
         // Dibujar todos los cuerpos en el lienzo (canvas)
-        for (var body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
-            var entity = body.GetUserData();
+        for (let body = box2d.world.GetBodyList(); body; body = body.GetNext()) {
+            const entity = body.GetUserData();
 
             if (entity) {
-                var entityX = body.GetPosition().x * box2d.scale;
+                const entityX = body.GetPosition().x * box2d.scale;
                 if (entityX < 0 || entityX > game.currentLevel.foregroundImage.width || (entity.health && entity.health < 0)) {
                     box2d.world.DestroyBody(body);
-                    if (entity.type == "villain") {
+                    if (entity.type === "villain") {
                         game.score += entity.calories;
                         $('#score').html('Score: ' + game.score);
                     }
@@ -368,13 +369,13 @@ let game = {
         game.context.lineWidth = 6; // Lo dibujamos como una linea gruesa
 
         // Calculamos el centro del heroe a partir del angulo y el radio
-        var radius = game.currentHero.GetUserData().radius;
-        var heroX = game.currentHero.GetPosition().x * box2d.scale;
-        var heroY = game.currentHero.GetPosition().y * box2d.scale;
-        var angle = Math.atan2(game.slingshotY + 25 - heroY, game.slingshotX + 50 - heroX);
+        const radius = game.currentHero.GetUserData().radius;
+        const heroX = game.currentHero.GetPosition().x * box2d.scale;
+        const heroY = game.currentHero.GetPosition().y * box2d.scale;
+        const angle = Math.atan2(game.slingshotY + 25 - heroY, game.slingshotX + 50 - heroX);
 
-        var heroFarEdgeX = heroX - radius * Math.cos(angle);
-        var heroFarEdgeY = heroY - radius * Math.sin(angle);
+        const heroFarEdgeX = heroX - radius * Math.cos(angle);
+        const heroFarEdgeY = heroY - radius * Math.sin(angle);
 
 
         game.context.beginPath();
@@ -393,11 +394,11 @@ let game = {
         game.context.moveTo(heroFarEdgeX - game.offsetLeft, heroFarEdgeY);
 
         // Dibujar la linea de regreso de la honda al lado frontal
-        game.context.lineTo(game.slingshotX - game.offsetLeft + 10, game.slingshotY + 30)
+        game.context.lineTo(game.slingshotX - game.offsetLeft + 10, game.slingshotY + 30);
         game.context.stroke();
     },
 
-}
+};
 
 let levels = {
     // Datos de nivel
@@ -627,12 +628,12 @@ let levels = {
 
     // Inicializar la pantalla de seleccion de nivel
     init: function () {
-        var html = "";
-        for (var i = 0; i < levels.data.length; i++) {
-            var level = levels.data[i];
+        let html = "";
+        for (let i = 0; i < levels.data.length; i++) {
+            // Sig linea no se usa
+            // const level = levels.data[i];
             html += '<input type="button" value="' + (i + 1) + '">';
         }
-        ;
         $('#levelselectscreen').html(html);
 
         // Preparar el boton para que cargue el nivel
@@ -669,8 +670,6 @@ let levels = {
             var entity = level.entities[i];
             entities.create(entity);
         }
-        ;
-
         // Iniciar el juego cuando los assets se hayan cargado
         if (loader.loaded) {
             game.start()
@@ -678,7 +677,7 @@ let levels = {
             loader.onload = game.start;
         }
     }
-}
+};
 
 let entities = {
     definitions: {
@@ -776,10 +775,10 @@ let entities = {
                 entity.sprite = loader.loadImage("img/entities/" + entity.name + ".png");
                 entity.shape = definition.shape;
                 entity.bounceSound = game.bounceSound;
-                if (definition.shape == "circle") {
+                if (definition.shape === "circle") {
                     entity.radius = definition.radius;
                     box2d.createCircle(entity, definition);
-                } else if (definition.shape == "rectangle") {
+                } else if (definition.shape === "rectangle") {
                     entity.width = definition.width;
                     entity.height = definition.height;
                     box2d.createRectangle(entity, definition);
@@ -802,10 +801,10 @@ let entities = {
                 break;
             case "villain":
             case "hero":
-                if (entity.shape == "circle") {
+                if (entity.shape === "circle") {
                     game.context.drawImage(entity.sprite, 0, 0, entity.sprite.width, entity.sprite.height,
                         -entity.radius - 1, -entity.radius - 1, entity.radius * 2 + 2, entity.radius * 2 + 2);
-                } else if (entity.shape == "rectangle") {
+                } else if (entity.shape === "rectangle") {
                     game.context.drawImage(entity.sprite, 0, 0, entity.sprite.width, entity.sprite.height,
                         -entity.width / 2 - 1, -entity.height / 2 - 1, entity.width + 2, entity.height + 2);
                 }
@@ -819,19 +818,19 @@ let entities = {
         game.context.translate(-position.x * box2d.scale + game.offsetLeft, -position.y * box2d.scale);
     }
 
-}
+};
 
 let box2d = {
     scale: 30,
     init: function () {
         // Preparar el mundo
-        var gravity = new b2Vec2(0, 9.8); // Declarar la gravedad
-        var allowSleep = true; // Permitir que los objetos en reposo se duerman para aumentar la velocidad de la simulacion
+        const gravity = new b2Vec2(0, 9.8); // Declarar la gravedad
+        const allowSleep = true; // Permitir que los objetos en reposo se duerman para aumentar la velocidad de la simulacion
         box2d.world = new b2World(gravity, allowSleep);
 
         // Configurar dibujos de depuracion
-        var debugContext = document.getElementById('debugcanvas').getContext('2d');
-        var debugDraw = new b2DebugDraw();
+        const debugContext = document.getElementById('debugcanvas').getContext('2d');
+        const debugDraw = new b2DebugDraw();
         debugDraw.SetSprite(debugContext);
         debugDraw.SetDrawScale(box2d.scale);
         debugDraw.SetFillAlpha(0.3);
@@ -839,14 +838,14 @@ let box2d = {
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
         box2d.world.SetDebugDraw(debugDraw);
 
-        var listener = new Box2D.Dynamics.b2ContactListener;
+        const listener = new Box2D.Dynamics.b2ContactListener;
         listener.PostSolve = function (contact, impulse) {
-            var body1 = contact.GetFixtureA().GetBody();
-            var body2 = contact.GetFixtureB().GetBody();
-            var entity1 = body1.GetUserData();
-            var entity2 = body2.GetUserData();
+            const body1 = contact.GetFixtureA().GetBody();
+            const body2 = contact.GetFixtureB().GetBody();
+            const entity1 = body1.GetUserData();
+            const entity2 = body2.GetUserData();
 
-            var impulseAlongNormal = Math.abs(impulse.normalImpulses[0]);
+            const impulseAlongNormal = Math.abs(impulse.normalImpulses[0]);
             // Este listener es llamado con mucha frecuencia... 
             // Filtra los impulsos muy pequeños. 5 es un valor apropiado para este filtro
             if (impulseAlongNormal > 5) {
@@ -877,7 +876,7 @@ let box2d = {
         box2d.world.Step(timeStep, 8, 3);
     },
     createRectangle: function (entity, definition) {
-        var bodyDef = new b2BodyDef;
+        const bodyDef = new b2BodyDef;
         if (entity.isStatic) {
             bodyDef.type = b2Body.b2_staticBody;
         } else {
@@ -890,7 +889,7 @@ let box2d = {
             bodyDef.angle = Math.PI * entity.angle / 180;
         }
 
-        var fixtureDef = new b2FixtureDef;
+        const fixtureDef = new b2FixtureDef;
         fixtureDef.density = definition.density;
         fixtureDef.friction = definition.friction;
         fixtureDef.restitution = definition.restitution;
@@ -898,15 +897,16 @@ let box2d = {
         fixtureDef.shape = new b2PolygonShape;
         fixtureDef.shape.SetAsBox(entity.width / 2 / box2d.scale, entity.height / 2 / box2d.scale);
 
-        var body = box2d.world.CreateBody(bodyDef);
+        const body = box2d.world.CreateBody(bodyDef);
         body.SetUserData(entity);
 
-        var fixture = body.CreateFixture(fixtureDef);
+        // No se usa
+        // const fixture = body.CreateFixture(fixtureDef);
         return body;
     },
 
     createCircle: function (entity, definition) {
-        var bodyDef = new b2BodyDef;
+        const bodyDef = new b2BodyDef;
         if (entity.isStatic) {
             bodyDef.type = b2Body.b2_staticBody;
         } else {
@@ -919,20 +919,21 @@ let box2d = {
         if (entity.angle) {
             bodyDef.angle = Math.PI * entity.angle / 180;
         }
-        var fixtureDef = new b2FixtureDef;
+        const fixtureDef = new b2FixtureDef;
         fixtureDef.density = definition.density;
         fixtureDef.friction = definition.friction;
         fixtureDef.restitution = definition.restitution;
 
         fixtureDef.shape = new b2CircleShape(entity.radius / box2d.scale);
 
-        var body = box2d.world.CreateBody(bodyDef);
+        const body = box2d.world.CreateBody(bodyDef);
         body.SetUserData(entity);
 
-        var fixture = body.CreateFixture(fixtureDef);
+        // No se usa
+        // const fixture = body.CreateFixture(fixtureDef);
         return body;
     },
-}
+};
 
 let loader = {
     loaded: true,
@@ -941,8 +942,8 @@ let loader = {
 
     init: function () {
         // Comprobar soporte de sonido
-        var mp3Support, oggSupport;
-        var audio = document.createElement('audio');
+        let mp3Support, oggSupport;
+        const audio = document.createElement('audio');
         if (audio.canPlayType) {
             // canPlayType() devuelve: "", "maybe" o "probably"
             mp3Support = "" !== audio.canPlayType('audio/mpeg');
@@ -960,7 +961,7 @@ let loader = {
         this.totalCount++;
         this.loaded = false;
         $('#loadingscreen').show();
-        var image = new Image();
+        const image = new Image();
         image.src = url;
         image.onload = loader.itemLoaded;
         return image;
@@ -970,12 +971,13 @@ let loader = {
         this.totalCount++;
         this.loaded = false;
         $('#loadingscreen').show();
-        var audio = new Audio();
+        const audio = new Audio();
         audio.src = url + loader.soundFileExtn;
         audio.addEventListener("canplaythrough", loader.itemLoaded, false);
         return audio;
     },
     itemLoaded: function (e) {
+        // El parametro e no se usa
         loader.loadedCount++;
         $('#loadingmessage').html('Loading ' + loader.loadedCount + ' of ' + loader.totalCount + '...');
         if (loader.loadedCount === loader.totalCount) {
@@ -995,10 +997,11 @@ let mouse = {
     y: 0,
     down: false,
     init: function () {
-        $('#gamecanvas').mousemove(mouse.mousemovehandler);
-        $('#gamecanvas').mousedown(mouse.mousedownhandler);
-        $('#gamecanvas').mouseup(mouse.mouseuphandler);
-        $('#gamecanvas').mouseout(mouse.mouseuphandler);
+        const gamecanvas = $('#gamecanvas');
+        gamecanvas.mousemove(mouse.mousemovehandler);
+        gamecanvas.mousedown(mouse.mousedownhandler);
+        gamecanvas.mouseup(mouse.mouseuphandler);
+        gamecanvas.mouseout(mouse.mouseuphandler);
     },
     mousemovehandler: function (ev) {
         var offset = $('#gamecanvas').offset();
@@ -1018,7 +1021,8 @@ let mouse = {
 
     },
     mouseuphandler: function (ev) {
+        // El parametro ev no se usa
         mouse.down = false;
         mouse.dragging = false;
     }
-}
+};
