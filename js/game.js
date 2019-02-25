@@ -243,7 +243,7 @@ let game = {
 
         if (game.mode === "fired") {
             // Mover la vista donde se encuentra el heroe
-            var heroX = game.currentHero.GetPosition().x * box2d.scale;
+            const heroX = game.currentHero.GetPosition().x * box2d.scale;
             game.panTo(heroX);
 
             // Y esperar hasta que termine de moverse o salga de los limites
@@ -674,7 +674,7 @@ let levels = {
         game.score = 0;
         $('#score').html('Score: ' + game.score);
         game.currentHero = undefined;
-        var level = levels.data[number];
+        const level = levels.data[number];
 
 
         // Cargar las imagenes de fondo, primer plano y honda
@@ -684,8 +684,8 @@ let levels = {
         game.slingshotFrontImage = loader.loadImage("img/slingshot-front.png");
 
         // Cargar todas las entidades
-        for (var i = level.entities.length - 1; i >= 0; i--) {
-            var entity = level.entities[i];
+        for (let i = level.entities.length - 1; i >= 0; i--) {
+            const entity = level.entities[i];
             entities.create(entity);
         }
         // Iniciar el juego cuando los assets se hayan cargado
@@ -766,7 +766,7 @@ let entities = {
     },
     // Crear una entidad a partir de su correspondiente cuerpo box2d, y annadirlo al mundo
     create: function (entity) {
-        var definition = entities.definitions[entity.name];
+        const definition = entities.definitions[entity.name];
         if (!definition) {
             console.log("Undefined entity name", entity.name);
             return;
