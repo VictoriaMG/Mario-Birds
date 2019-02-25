@@ -79,3 +79,7 @@
     color: ghostwhite;
     vertical-align: middle;
 }
+
+*[onclick] {
+    cursor: pointer;
+}
