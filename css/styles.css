@@ -83,3 +83,9 @@
 *[onclick] {
     cursor: pointer;
 }
+
+#debugcanvas {
+    position: absolute;
+    display: block;
+    top: 500px;
+}

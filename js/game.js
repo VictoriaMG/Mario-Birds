@@ -94,15 +94,33 @@ let game = {
         }
     },
     showLevelScreen: function () {
+        // Codigo extra para limpiar el nivel anterior
+        console.debug("Going back to level select");
+        loader.reset();
+        window.cancelAnimationFrame(game.animationFrame);
+        game.lastUpdateTime = undefined;
+        game.currentLevel = undefined;
+        game.currentHero = undefined;
+        game.score = 0;
+        game.mode = "intro";
+        game.offsetLeft = 0;
+        game.ended = false;
+        game.stopBackgroundMusic();
+        // Fin codigo extra
         $('.gamelayer').hide();
         $('#levelselectscreen').show('slow');
+
     },
     restartLevel: function () {
+        loader.reset();
+        game.stopBackgroundMusic();
         window.cancelAnimationFrame(game.animationFrame);
         game.lastUpdateTime = undefined;
         levels.load(game.currentLevel.number);
     },
     startNextLevel: function () {
+        loader.reset();
+        game.stopBackgroundMusic();
         window.cancelAnimationFrame(game.animationFrame);
         game.lastUpdateTime = undefined;
         levels.load(game.currentLevel.number + 1);
@@ -268,7 +286,7 @@ let game = {
                 game.currentHero.SetAngularVelocity(0);
                 game.currentHero.SetAwake(true);
             } else {
-                // Esperar a que el heroe termine de moverse y se duerma. 
+                // Esperar a que el heroe termine de moverse y se duerma.
                 // Luego entrar en modo espera al siguiente disparo
                 game.panTo(game.slingshotX);
                 if (!game.currentHero.IsAwake()) {
@@ -846,7 +864,7 @@ let box2d = {
             const entity2 = body2.GetUserData();
 
             const impulseAlongNormal = Math.abs(impulse.normalImpulses[0]);
-            // Este listener es llamado con mucha frecuencia... 
+            // Este listener es llamado con mucha frecuencia...
             // Filtra los impulsos muy pequeños. 5 es un valor apropiado para este filtro
             if (impulseAlongNormal > 5) {
                 // Si el objeto tiene salud, debe reducirse por el valor del impulso
@@ -992,6 +1010,12 @@ let loader = {
                 loader.onload = undefined;
             }
         }
+    },
+    //Para reiniciar el cargador de assets
+    reset: function () {
+        loader.loadedCount = 0; // Assets cargados
+        loader.totalCount = 0; // Total de assets a cargar
+        console.debug(loader)
     }
 };
 let mouse = {
