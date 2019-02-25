@@ -901,6 +901,7 @@ let box2d = {
         body.SetUserData(entity);
 
         // No se usa
+        // const fixture = body.CreateFixture(fixtureDef);
         body.CreateFixture(fixtureDef);
         return body;
     },
@@ -930,6 +931,7 @@ let box2d = {
         body.SetUserData(entity);
 
         // No se usa
+        // const fixture = body.CreateFixture(fixtureDef);
         body.CreateFixture(fixtureDef);
         return body;
     },
