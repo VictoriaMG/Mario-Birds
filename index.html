@@ -16,8 +16,8 @@
 <div id="gamecontainer">
     <canvas class="gamelayer" id="gamecanvas" width="640" height="480"></canvas>
     <div class="gamelayer" id="scorescreen">
-        <img id="togglemusic" src="img/icons/sound.png">
-        <img src="img/icons/prev.png">
+        <img id="togglemusic" src="img/icons/sound.png" onclick="game.toggleBackgroundMusic()">
+        <img src="img/icons/prev.png" onclick="game.showLevelScreen()">
         <span id="score">Score: </span>
     </div>
     <div class="gamelayer" id="gamestartscreen">
@@ -31,9 +31,10 @@
     </div>
     <div class="gamelayer" id="endingscreen">
         <p id="endingmessage">The Level Is Over</p>
-        <p id="playcurrentlevel"><img src="img/icons/prev.png"> Replay Current Level</p>
-        <p id="playnextlevel"><img src="img/icons/next.png"> Play Next Level</p>
-        <p id="showLevelScreen"><img src="img/icons/return.png"> Return to Level Screen</p>
+        <p id="playcurrentlevel" onclick="game.restartLevel()"><img src="img/icons/prev.png"> Replay Current Level</p>
+        <p id="playnextlevel" onclick="game.startNextLevel()"><img src="img/icons/next.png"> Play Next Level</p>
+        <p id="showLevelScreen" onclick="game.showLevelScreen()"><img src="img/icons/return.png"> Return to Level Screen
+        </p>
     </div>
     <canvas id="debugcanvas" width="1000" height="480" style="border:1px solid black;"></canvas>
 </div>
