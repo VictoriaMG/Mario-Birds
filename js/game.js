@@ -559,7 +559,7 @@ let levels = {
 
                 {
                     type: "hero",
-                    name: "orange",
+                    name: "shellGreen",
                     x: 80,
                     y: 405
                 },
@@ -696,7 +696,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "orange",
+                    name: "shellGreen",
                     x: 80,
                     y: 405
                 },
@@ -801,7 +801,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "orange",
+                    name: "shellGreen",
                     x: 80,
                     y: 405
                 },
@@ -923,7 +923,7 @@ let entities = {
             friction: 0.5,
             restitution: 0.4
         },
-        orange: {
+        shellGreen: {
             shape: "circle",
             radius: 25,
             density: 1.5,
