@@ -52,7 +52,7 @@ let game = {
     mouse.init();
 
     // Cargar musica y efectos de sonido
-
+    // TODO: CAMBIAR MUSICA A PLAYAMINIGAME
     //"Kindergarten" by Gurdonark
     //http://ccmixter.org/files/gurdonark/26491 con licencia Creative Commons
     game.backgroundMusic = loader.loadSound("audio/gurdonark-kindergarten");
