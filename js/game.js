@@ -565,7 +565,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "apple",
+                    name: "shell",
                     x: 140,
                     y: 405
                 }
@@ -702,7 +702,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "apple",
+                    name: "shell",
                     x: 140,
                     y: 405
                 }
@@ -807,7 +807,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "apple",
+                    name: "shell",
                     x: 140,
                     y: 405
                 }
@@ -916,7 +916,7 @@ let entities = {
             friction: 0.5,
             restitution: 0.6
         },
-        apple: {
+        shell: {
             shape: "circle",
             radius: 25,
             density: 1.5,
