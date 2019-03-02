@@ -551,10 +551,10 @@ let levels = {
                 },
                 {
                     type: "villain",
-                    name: "fries",
+                    name: "blooper",
                     x: 620,
                     y: 205,
-                    calories: 420
+                    calories: 200
                 },
 
                 {
@@ -675,7 +675,7 @@ let levels = {
                 },
                 {
                     type: "villain",
-                    name: "fries",
+                    name: "blooper",
                     x: 670,
                     y: 405,
                     calories: 420
@@ -780,7 +780,7 @@ let levels = {
                 },
                 {
                     type: "villain",
-                    name: "fries",
+                    name: "blooper",
                     x: 550,
                     y: 405,
                     calories: 420
@@ -907,7 +907,7 @@ let entities = {
             friction: 0.5,
             restitution: 0.7
         },
-        fries: {
+        blooper: {
             shape: "rectangle",
             fullHealth: 50,
             width: 40,
