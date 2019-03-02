@@ -682,7 +682,7 @@ let levels = {
                 },
                 {
                     type: "villain",
-                    name: "sodacan",
+                    name: "pirana",
                     x: 765,
                     y: 400,
                     calories: 150
@@ -787,7 +787,7 @@ let levels = {
                 },
                 //{
                 //  type: "villain",
-                //  name: "sodacan",
+                //  name: "pirana",
                 //  x: 765,
                 //  y: 400,
                 //  calories: 150
@@ -898,7 +898,7 @@ let entities = {
             friction: 0.5,
             restitution: 0.4
         },
-        sodacan: {
+        pirana: {
             shape: "rectangle",
             fullHealth: 80,
             width: 40,
