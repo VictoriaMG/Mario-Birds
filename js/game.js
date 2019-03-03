@@ -1138,7 +1138,6 @@ let entities = {
                 }
                 break;
             case "ground":
-                // TODO: El suelo y la honda se dibujan por separado..
                 break;
         }
 
