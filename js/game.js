@@ -714,6 +714,91 @@ let levels = {
             background: "clouds-background",
             entities: [
                 {
+                    type: "ground",
+                    name: "dirt",
+                    x: 500,
+                    y: 440,
+                    width: 1000,
+                    height: 20,
+                    isStatic: true
+                },
+                {
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 390,
+                    width: 30,
+                    height: 80,
+                    isStatic: true
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 500,
+                    y: 300,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "villain",
+                    name: "pirana",
+                    x: 540,
+                    y: 400,
+                    calories: 150
+                },
+                {
+                    type: "villain",
+                    name: "pirana",
+                    x: 580,
+                    y: 400,
+                    calories: 150
+                },
+                {
+                    type: "villain",
+                    name: "pirana",
+                    x: 620,
+                    y: 400,
+                    calories: 150
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 680,
+                    y: 300,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 730,
+                    y: 300,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "hero",
+                    name: "shellGreen",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shell",
+                    x: 140,
+                    y: 405
+                }
+            ]
+        },
+        {
+            // Tercer nivel
+            foreground: "desert-foreground",
+            background: "clouds-background",
+            entities: [
+                {
                     // Suelo
                     type: "ground",
                     name: "dirt",
@@ -898,6 +983,22 @@ let entities = {
             friction: 0.5,
             restitution: 0.4
         },
+        Spiked_Goomba: {
+            shape: "circle",
+            fullHealth: 70,
+            radius: 30,
+            density: 1,
+            friction: 0.5,
+            restitution: 0.4
+        },
+        Fuzzy: {
+            shape: "circle",
+            fullHealth: 40,
+            radius: 30,
+            density: 1,
+            friction: 0.5,
+            restitution: 0.4
+        },
         pirana: {
             shape: "rectangle",
             fullHealth: 80,
@@ -1036,7 +1137,7 @@ let entities = {
                 }
                 break;
             case "ground":
-                // El suelo y la honda se dibujan por separado..
+                // TODO: El suelo y la honda se dibujan por separado..
                 break;
         }
 
