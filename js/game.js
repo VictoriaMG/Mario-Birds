@@ -714,91 +714,6 @@ let levels = {
             background: "clouds-background",
             entities: [
                 {
-                    type: "ground",
-                    name: "dirt",
-                    x: 500,
-                    y: 440,
-                    width: 1000,
-                    height: 20,
-                    isStatic: true
-                },
-                {
-                    type: "ground",
-                    name: "wood",
-                    x: 185,
-                    y: 390,
-                    width: 30,
-                    height: 80,
-                    isStatic: true
-                },
-                {
-                    type: "block",
-                    name: "glass",
-                    x: 500,
-                    y: 300,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "villain",
-                    name: "pirana",
-                    x: 540,
-                    y: 400,
-                    calories: 150
-                },
-                {
-                    type: "villain",
-                    name: "pirana",
-                    x: 580,
-                    y: 400,
-                    calories: 150
-                },
-                {
-                    type: "villain",
-                    name: "pirana",
-                    x: 620,
-                    y: 400,
-                    calories: 150
-                },
-                {
-                    type: "block",
-                    name: "glass",
-                    x: 680,
-                    y: 300,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "glass",
-                    x: 730,
-                    y: 300,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "hero",
-                    name: "shellGreen",
-                    x: 80,
-                    y: 405
-                },
-                {
-                    type: "hero",
-                    name: "shell",
-                    x: 140,
-                    y: 405
-                }
-            ]
-        },
-        {
-            // Tercer nivel
-            foreground: "desert-foreground",
-            background: "clouds-background",
-            entities: [
-                {
                     // Suelo
                     type: "ground",
                     name: "dirt",
@@ -821,66 +736,140 @@ let levels = {
                 // Estructuras
                 {
                     type: "block",
-                    name: "wood",
+                    name: "pipeAzul",
                     x: 400,
-                    y: 380,
-                    angle: 120,
-                    width: 250,
-                    height: 30
+                    y: 317.5,
+                    angle: 90,
+                    width: 90,
+                    height: 20
                 },
                 {
                     type: "block",
-                    name: "wood",
+                    name: "pipeAzul",
+                    x: 340,
+                    y: 317.5,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeAzul",
+                    x: 370,
+                    y: 317.5,
+                    width: 85,
+                    height: 20
+                },
+                //Sgunda altura
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 400,
+                    y: 192.5,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 340,
+                    y: 192.5,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 370,
+                    y: 192.5,
+                    width: 85,
+                    height: 20
+                },
+                //Segundo bloque
+                {
+                    type: "block",
+                    name: "glass",
                     x: 500,
                     y: 380,
                     angle: 90,
-                    width: 100,
-                    height: 30
+                    width: 90,
+                    height: 20
                 },
                 {
                     type: "block",
-                    name: "wood",
+                    name: "glass",
+                    x: 440,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 470,
+                    y: 280,
+                    width: 85,
+                    height: 20
+                },
+                // Tercer Bloque
+                //Segundo bloque
+                {
+                    type: "block",
+                    name: "glass",
                     x: 600,
                     y: 380,
                     angle: 90,
-                    width: 100,
-                    height: 30
+                    width: 90,
+                    height: 20
                 },
                 {
                     type: "block",
-                    name: "wood",
-                    x: 550,
-                    y: 335,
-                    angle: 0,
-                    width: 150,
-                    height: 30
+                    name: "glass",
+                    x: 540,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 570,
+                    y: 280,
+                    width: 85,
+                    height: 20
                 },
                 // Enemigos
                 {
                     type: "villain",
-                    name: "goomba",
-                    x: 415,
-                    y: 355,
-                    calories: 590
+                    name: "florAzul",
+                    x: 370,
+                    y: 90,
+                    calories: 150
                 },
                 {
                     type: "villain",
-                    name: "blooper",
-                    x: 550,
-                    y: 405,
-                    calories: 420
+                    name: "florAzul",
+                    x: 570,
+                    y: 90,
+                    calories: 150
                 },
-                //{
-                //  type: "villain",
-                //  name: "pirana",
-                //  x: 765,
-                //  y: 400,
-                //  calories: 150
-                //},
+                {
+                    type: "villain",
+                    name: "bone",
+                    x: 470,
+                    y: 90,
+                    calories: 150
+                },
 
+
+                //Bolas
                 {
                     type: "hero",
-                    name: "strawberry",
+                    name: "shellAzul",
                     x: 30,
                     y: 415
                 },
@@ -897,7 +886,162 @@ let levels = {
                     y: 405
                 }
             ]
-        }
+        },
+        {
+            // Cuarto nivel
+            foreground: "desert-foreground",
+            background: "clouds-background",
+            entities: [
+                {
+                    type: "ground",
+                    name: "dirt",
+                    x: 500,
+                    y: 440,
+                    width: 1000,
+                    height: 20,
+                    isStatic: true
+                },
+                {
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 390,
+                    width: 30,
+                    height: 80,
+                    isStatic: true
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 520,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 720,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 620,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 670,
+                    y: 317.5,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 770,
+                    y: 317.5,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 920, y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 820,
+                    y: 380,
+                    angle: 90, width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "wood",
+                    x: 720,
+                    y: 380,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                //Villanos
+                {
+                    type: "villain",
+                    name: "blooper",
+                    x: 670,
+                    y: 405,
+                    calories: 420
+                },
+                {
+                    type: "villain",
+                    name: "Fuzzy",
+                    x: 870,
+                    y: 405,
+                    calories: 420
+                },
+                {
+                    type: "villain",
+                    name: "spiny",
+                    x: 765,
+                    y: 0,
+                    calories: 420
+                },
+                {
+                    type: "villain",
+                    name: "goomba",
+                    x: 665,
+                    y: 155,
+                    calories: 700
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 870,
+                    y: 317.5,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "glass",
+                    x: 970, y: 317.5,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "hero",
+                    name: "shellGreen",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shellAzul",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shell",
+                    x: 140,
+                    y: 405
+                }
+            ]
+        },
     ],
 
     // Inicializar la pantalla de seleccion de nivel
@@ -965,6 +1109,12 @@ let entities = {
             friction: 0.4,
             restitution: 0.15
         },
+        pipeAzul: {
+            fullHealth: 200,
+            density: 2.4,
+            friction: 0.4,
+            restitution: 0.15
+        },
         wood: {
             fullHealth: 500,
             density: 0.7,
@@ -984,10 +1134,11 @@ let entities = {
             friction: 0.5,
             restitution: 0.4
         },
-        Spiked_Goomba: {
+
+        spiny: {
             shape: "circle",
             fullHealth: 70,
-            radius: 30,
+            radius: 25,
             density: 1,
             friction: 0.5,
             restitution: 0.4
@@ -1018,6 +1169,33 @@ let entities = {
             friction: 0.5,
             restitution: 0.6
         },
+        florDorada: {
+            shape: "rectangle",
+            fullHealth: 70,
+            width: 30,
+            height: 40,
+            density: 1,
+            friction: 0.5,
+            restitution: 0.6
+        },
+        florAzul: {
+            shape: "rectangle",
+            fullHealth: 35,
+            width: 30,
+            height: 40,
+            density: 1,
+            friction: 0.9,
+            restitution: 0
+        },
+        bone: {
+            shape: "rectangle",
+            fullHealth: 65,
+            width: 30,
+            height: 40,
+            density: 1,
+            friction: 0.9,
+            restitution: 0.4
+        },
         shell: {
             shape: "circle",
             radius: 25,
@@ -1032,13 +1210,21 @@ let entities = {
             friction: 0.5,
             restitution: 0.4
         },
-        strawberry: {
+        shellAzul: {
             shape: "circle",
-            radius: 15,
-            density: 2.0,
+            radius: 25,
+            density: 1.5,
+            friction: 0.5,
+            restitution: 0.4
+        },
+        shellOro: {
+            shape: "circle",
+            radius: 25,
+            density: 1.5,
             friction: 0.5,
             restitution: 0.4
         }
+
     },
     // Crear una entidad a partir de su correspondiente cuerpo box2d, y annadirlo al mundo
     create: function (entity) {
