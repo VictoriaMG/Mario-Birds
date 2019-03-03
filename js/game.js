@@ -958,6 +958,7 @@ let levels = {
 
 let entities = {
     definitions: {
+        //TODO: Revisar valor de vida
         glass: {
             fullHealth: 100,
             density: 2.4,
