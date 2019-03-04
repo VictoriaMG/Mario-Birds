@@ -59,7 +59,7 @@ let game = {
         game.slingshotReleasedSound = loader.loadSound("audio/released");
         game.bounceSound = loader.loadSound("audio/bounce");
         game.breakSound = {
-            glass: loader.loadSound("audio/glassbreak"),
+            pipeVerde: loader.loadSound("audio/pipeVerdebreak"),
             wood: loader.loadSound("audio/woodbreak")
         };
 
@@ -516,7 +516,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 520,
                     y: 280,
                     angle: 90,
@@ -542,7 +542,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 620,
                     y: 280,
                     angle: 90,
@@ -624,7 +624,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 670,
                     y: 317.5,
                     width: 100,
@@ -632,7 +632,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 770,
                     y: 317.5,
                     width: 100,
@@ -641,7 +641,7 @@ let levels = {
 
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 670,
                     y: 255,
                     angle: 90,
@@ -650,7 +650,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 770,
                     y: 255,
                     angle: 90,
@@ -717,6 +717,165 @@ let levels = {
                     // Suelo
                     type: "ground",
                     name: "dirt",
+                    x: 300,
+                    y: 440,
+                    width: 1000,
+                    height: 20,
+                    isStatic: true
+                },
+                {
+                    // Tirachinas
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 390,
+                    width: 30,
+                    height: 80,
+                    isStatic: true
+                },
+                // Estructuras
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 400,
+                    y: 317.5,
+                    angle: 115,
+                    width: 90,
+                    height: 20
+                },
+                //Segundo bloque
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 500,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 440,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 470,
+                    y: 280,
+                    width: 85,
+                    height: 20
+                },
+                // Tercer Bloque
+                //Segundo bloque
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 600,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 540,
+                    y: 380,
+                    angle: 90,
+                    width: 90,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 570,
+                    y: 280,
+                    width: 85,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 640,
+                    y: 317.5,
+                    angle: 45,
+                    width: 90,
+                    height: 20
+                },
+                // Enemigos
+                {
+                    type: "villain",
+                    name: "florAzul",
+                    x: 570,
+                    y: 90,
+                    calories: 150
+                },
+                {
+                    type: "villain",
+                    name: "florAzul",
+                    x: 470,
+                    y: 90,
+                    calories: 150
+                },
+                {
+                    type: "villain",
+                    name: "florBasica",
+                    x: 575,
+                    y: 90,
+                    calories: 150
+                },
+                //Abajo
+                {
+                    type: "villain",
+                    name: "florDorada",
+                    x: 570,
+                    y: 300,
+                    calories: 500
+                },
+                {
+                    type: "villain",
+                    name: "florDorada",
+                    x: 470,
+                    y: 300,
+                    calories: 500
+                },
+
+
+                //Bolas
+                {
+                    type: "hero",
+                    name: "shellAzul",
+                    x: 30,
+                    y: 415
+                },
+                {
+                    type: "hero",
+                    name: "shellGreen",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shell",
+                    x: 140,
+                    y: 405
+                }
+            ]
+        },
+        {
+            // Cuarto nivel
+            foreground: "desert-foreground",
+            background: "clouds-background",
+            entities: [
+                {
+                    // Suelo
+                    type: "ground",
+                    name: "dirt",
                     x: 500,
                     y: 440,
                     width: 1000,
@@ -763,7 +922,7 @@ let levels = {
                 //Sgunda altura
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 400,
                     y: 192.5,
                     angle: 90,
@@ -772,7 +931,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 340,
                     y: 192.5,
                     angle: 90,
@@ -781,7 +940,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 370,
                     y: 192.5,
                     width: 85,
@@ -790,7 +949,7 @@ let levels = {
                 //Segundo bloque
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 500,
                     y: 380,
                     angle: 90,
@@ -799,7 +958,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 440,
                     y: 380,
                     angle: 90,
@@ -808,7 +967,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 470,
                     y: 280,
                     width: 85,
@@ -818,7 +977,7 @@ let levels = {
                 //Segundo bloque
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 600,
                     y: 380,
                     angle: 90,
@@ -827,7 +986,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 540,
                     y: 380,
                     angle: 90,
@@ -836,7 +995,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 570,
                     y: 280,
                     width: 85,
@@ -888,7 +1047,7 @@ let levels = {
             ]
         },
         {
-            // Cuarto nivel
+            // Quinto nivel
             foreground: "desert-foreground",
             background: "clouds-background",
             entities: [
@@ -939,7 +1098,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 670,
                     y: 317.5,
                     width: 100,
@@ -947,7 +1106,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 770,
                     y: 317.5,
                     width: 100,
@@ -1009,7 +1168,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 870,
                     y: 317.5,
                     width: 100,
@@ -1017,7 +1176,7 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "glass",
+                    name: "pipeVerde",
                     x: 970, y: 317.5,
                     width: 100,
                     height: 25
@@ -1103,7 +1262,7 @@ let levels = {
 let entities = {
     definitions: {
         //TODO: Revisar valor de vida
-        glass: {
+        pipeVerde: {
             fullHealth: 100,
             density: 2.4,
             friction: 0.4,
@@ -1179,6 +1338,15 @@ let entities = {
             restitution: 0.6
         },
         florAzul: {
+            shape: "rectangle",
+            fullHealth: 35,
+            width: 30,
+            height: 40,
+            density: 1,
+            friction: 0.9,
+            restitution: 0
+        },
+        florBasica: {
             shape: "rectangle",
             fullHealth: 35,
             width: 30,
