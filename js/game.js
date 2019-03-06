@@ -822,13 +822,6 @@ let levels = {
                     y: 90,
                     calories: 150
                 },
-                {
-                    type: "villain",
-                    name: "florBasica",
-                    x: 575,
-                    y: 90,
-                    calories: 150
-                },
                 //Abajo
                 {
                     type: "villain",
@@ -1069,118 +1062,90 @@ let levels = {
                     height: 80,
                     isStatic: true
                 },
+                // Estructuras
                 {
                     type: "block",
-                    name: "wood",
-                    x: 520,
-                    y: 380,
+                    name: "soloLadrillos",
+                    x: 400,
+                    y: 400,
+                    angle: 90,
+                    width: 130,
+                    height: 35
+                },
+                {
+                    type: "block",
+                    name: "ladrillos",
+                    x: 475,
+                    y: 300,
+                    width: 185,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 550,
+                    y: 400,
+                    angle: 90,
+                    width: 130,
+                    height: 35
+                },
+                // Segunda altura
+                {
+                    type: "block",
+                    name: "pipeAzul",
+                    x: 480,
+                    y: 413,
+                    angle: 90,
+                    width: 40,
+                    height: 35
+                },
+                {
+                    type: "block",
+                    name: "pipeAzul",
+                    x: 550,
+                    y: 255,
                     angle: 90,
                     width: 100,
                     height: 25
                 },
                 {
                     type: "block",
-                    name: "wood",
-                    x: 720,
-                    y: 380,
+                    name: "pipeAzul",
+                    x: 400,
+                    y: 255,
                     angle: 90,
                     width: 100,
                     height: 25
                 },
-                {
+                /*{
                     type: "block",
-                    name: "wood",
-                    x: 620,
-                    y: 380,
-                    angle: 90,
-                    width: 100,
+                    name: "pipeAzul",
+                    x: 475,
+                    y: 400,
+                    width: 185,
                     height: 25
-                },
-                {
-                    type: "block",
-                    name: "pipeVerde",
-                    x: 670,
-                    y: 317.5,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "pipeVerde",
-                    x: 770,
-                    y: 317.5,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "wood",
-                    x: 920, y: 380,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "wood",
-                    x: 820,
-                    y: 380,
-                    angle: 90, width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "wood",
-                    x: 720,
-                    y: 380,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                //Villanos
+                },*/
+
+
+                // Villanos
                 {
                     type: "villain",
-                    name: "blooper",
-                    x: 670,
-                    y: 405,
-                    calories: 420
-                },
-                {
-                    type: "villain",
-                    name: "Fuzzy",
-                    x: 870,
-                    y: 405,
-                    calories: 420
+                    name: "pirana",
+                    x: 435,
+                    y : 400,
+                    //Altura para que no salte el objeto!!
+                   // y: 345,
+                    calories: 200
                 },
                 {
                     type: "villain",
-                    name: "spiny",
-                    x: 765,
-                    y: 0,
-                    calories: 420
+                    name: "tortugavillana",
+                    x: 490,
+                    //Altura para que no salte el objeto!!
+                    y: 400,
+                    calories: 200
                 },
-                {
-                    type: "villain",
-                    name: "goomba",
-                    x: 665,
-                    y: 155,
-                    calories: 700
-                },
-                {
-                    type: "block",
-                    name: "pipeVerde",
-                    x: 870,
-                    y: 317.5,
-                    width: 100,
-                    height: 25
-                },
-                {
-                    type: "block",
-                    name: "pipeVerde",
-                    x: 970, y: 317.5,
-                    width: 100,
-                    height: 25
-                },
+
                 {
                     type: "hero",
                     name: "shellGreen",
@@ -1195,7 +1160,7 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "shell",
+                    name: "shellOro",
                     x: 140,
                     y: 405
                 }
@@ -1280,6 +1245,18 @@ let entities = {
             friction: 0.4,
             restitution: 0.4
         },
+        ladrillos: {
+            fullHealth: 700,
+            density: 0.7,
+            friction: 0.4,
+            restitution: 0.4
+        },
+        soloLadrillos: {
+            fullHealth: 700,
+            density: 0.7,
+            friction: 0.4,
+            restitution: 0.4
+        },
         dirt: {
             density: 3.0,
             friction: 1.5,
@@ -1360,6 +1337,15 @@ let entities = {
             fullHealth: 65,
             width: 30,
             height: 40,
+            density: 1,
+            friction: 0.9,
+            restitution: 0.4
+        },
+        tortugavillana: {
+            shape: "rectangle",
+            fullHealth: 465,
+            width: 75,
+            height: 75,
             density: 1,
             friction: 0.9,
             restitution: 0.4
