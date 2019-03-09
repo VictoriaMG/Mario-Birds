@@ -23,7 +23,9 @@
 }
 
 #levelselectscreen {
-  padding: 150px 0 0 50px;
+  padding: 100px 50px;
+  width: 540px;
+  height: 280px;
 }
 
 #levelselectscreen input {

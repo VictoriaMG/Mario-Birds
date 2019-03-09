@@ -891,7 +891,7 @@ let levels = {
           type: "block",
           name: "pipeAzul",
           x: 400,
-          y: 317.5,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -900,7 +900,7 @@ let levels = {
           type: "block",
           name: "pipeAzul",
           x: 340,
-          y: 317.5,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -909,35 +909,35 @@ let levels = {
           type: "block",
           name: "pipeAzul",
           x: 370,
-          y: 317.5,
-          width: 85,
+          y: 340,
+          width: 80,
           height: 20
         },
         //Sgunda altura
         {
           type: "block",
-          name: "pipeVerde",
+          name: "pipeAzul",
           x: 400,
-          y: 192.5,
+          y: 280,
           angle: 90,
           width: 90,
           height: 20
         },
         {
           type: "block",
-          name: "pipeVerde",
+          name: "pipeAzul",
           x: 340,
-          y: 192.5,
+          y: 280,
           angle: 90,
           width: 90,
           height: 20
         },
         {
           type: "block",
-          name: "pipeVerde",
+          name: "pipeAzul",
           x: 370,
-          y: 192.5,
-          width: 85,
+          y: 220,
+          width: 80,
           height: 20
         },
         //Segundo bloque
@@ -945,7 +945,7 @@ let levels = {
           type: "block",
           name: "pipeVerde",
           x: 500,
-          y: 380,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -954,7 +954,7 @@ let levels = {
           type: "block",
           name: "pipeVerde",
           x: 440,
-          y: 380,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -963,17 +963,16 @@ let levels = {
           type: "block",
           name: "pipeVerde",
           x: 470,
-          y: 280,
-          width: 85,
+          y: 340,
+          width: 80,
           height: 20
         },
         // Tercer Bloque
-        //Segundo bloque
         {
           type: "block",
           name: "pipeVerde",
           x: 600,
-          y: 380,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -982,7 +981,7 @@ let levels = {
           type: "block",
           name: "pipeVerde",
           x: 540,
-          y: 380,
+          y: 400,
           angle: 90,
           width: 90,
           height: 20
@@ -991,8 +990,8 @@ let levels = {
           type: "block",
           name: "pipeVerde",
           x: 570,
-          y: 280,
-          width: 85,
+          y: 340,
+          width: 80,
           height: 20
         },
         // Enemigos
@@ -1000,22 +999,22 @@ let levels = {
           type: "villain",
           name: "florAzul",
           x: 370,
-          y: 90,
+          y: 200,
           calories: 150
         },
         {
           type: "villain",
           name: "florAzul",
           x: 570,
-          y: 90,
+          y: 300,
           calories: 150
         },
         {
           type: "villain",
           name: "bone",
           x: 470,
-          y: 90,
-          calories: 150
+          y: 300,
+          calories: 300
         },
 
         //Bolas
@@ -1164,6 +1163,277 @@ let levels = {
           y: 405
         }
       ]
+    },
+    {
+      // Sexto nivel
+      foreground: "desert-foreground",
+      background: "clouds-background",
+      entities: [
+        {
+          type: "ground",
+          name: "dirt",
+          x: 500,
+          y: 440,
+          width: 1000,
+          height: 20,
+          isStatic: true
+        },
+        {
+          type: "ground",
+          name: "wood",
+          x: 185,
+          y: 390,
+          width: 30,
+          height: 80,
+          isStatic: true
+        },
+        // Estructuras
+        {
+          type: "block",
+          name: "soloLadrillos",
+          x: 500,
+          y: 400,
+          angle: 90,
+          width: 130,
+          height: 35
+        },
+        {
+          type: "block",
+          name: "soloLadrillos",
+          x: 560,
+          y: 400,
+          angle: 90,
+          width: 130,
+          height: 35
+        },
+        {
+          type: "block",
+          name: "ladrillos",
+          x: 530,
+          y: 300,
+          width: 150,
+          height: 25
+        },
+
+        // Villanos
+        {
+          type: "villain",
+          name: "blooper",
+          x: 530,
+          y: 400,
+          //Altura para que no salte el objeto!!
+          // y: 345,
+          calories: 200
+        },
+        {
+          type: "villain",
+          name: "Fuzzy",
+          x: 600,
+          //Altura para que no salte el objeto!!
+          y: 400,
+          calories: 200
+        },
+
+        {
+          type: "hero",
+          name: "shellGreen",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellAzul",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellOro",
+          x: 140,
+          y: 405
+        }
+      ]
+    },
+    {
+      // Septimo nivel
+      foreground: "desert-foreground",
+      background: "clouds-background",
+      entities: [
+        {
+          type: "ground",
+          name: "dirt",
+          x: 500,
+          y: 440,
+          width: 1000,
+          height: 20,
+          isStatic: true
+        },
+        {
+          type: "ground",
+          name: "wood",
+          x: 185,
+          y: 390,
+          width: 30,
+          height: 80,
+          isStatic: true
+        },
+        // Estructuras
+        {
+          type: "block",
+          name: "pipeVerde",
+          x: 500,
+          y: 350,
+          angle: 90,
+          width: 130,
+          height: 35
+        },
+        {
+          type: "block",
+          name: "pipeAzul",
+          x: 520,
+          y: 350,
+          angle: 90,
+          width: 130,
+          height: 35
+        },
+        {
+          type: "block",
+          name: "pipeVerde",
+          x: 540,
+          y: 350,
+          angle: 90,
+          width: 130,
+          height: 35
+        },
+        {
+          type: "block",
+          name: "ladrillos",
+          x: 525,
+          y: 400,
+          width: 150,
+          height: 25
+        },
+        {
+          type: "block",
+          name: "ladrillos",
+          x: 525,
+          y: 300,
+          width: 150,
+          height: 25
+        },
+        // Villanos
+        {
+          type: "villain",
+          name: "florDorada",
+          x: 520,
+          y: 250,
+          calories: 200
+        },
+
+        {
+          type: "villain",
+          name: "florBasica",
+          x: 650,
+          y: 400,
+          calories: 200
+        },
+        {
+          type: "hero",
+          name: "shellGreen",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellAzul",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellOro",
+          x: 140,
+          y: 405
+        }
+      ]
+    },
+    {
+      // Septimo nivel
+      foreground: "desert-foreground",
+      background: "clouds-background",
+      entities: [
+        {
+          type: "ground",
+          name: "dirt",
+          x: 500,
+          y: 440,
+          width: 1000,
+          height: 20,
+          isStatic: true
+        },
+        {
+          type: "ground",
+          name: "wood",
+          x: 185,
+          y: 390,
+          width: 30,
+          height: 80,
+          isStatic: true
+        },
+        // Estructuras
+        {
+          type: "block",
+          name: "pipeVerde",
+          x: 550,
+          y: 400,
+          angle: 90,
+          width: 150,
+          height: 50
+        },
+        {
+          type: "block",
+          name: "soloLadrillos",
+          x: 550,
+          y: 250,
+          angle: 90,
+          width: 150,
+          height: 50
+        },
+        // Villanos
+        {
+          type: "villain",
+          name: "florDorada",
+          x: 520,
+          y: 250,
+          calories: 200
+        },
+
+        {
+          type: "villain",
+          name: "florBasica",
+          x: 650,
+          y: 400,
+          calories: 200
+        },
+        {
+          type: "hero",
+          name: "shellGreen",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellAzul",
+          x: 80,
+          y: 405
+        },
+        {
+          type: "hero",
+          name: "shellOro",
+          x: 140,
+          y: 405
+        }
+      ]
     }
   ],
 
@@ -1257,9 +1527,9 @@ let entities = {
       restitution: 0.4
     },
     dirt: {
-      density: 30.0,
-      friction: 0.9,
-      restitution: 0.0
+      density: 300.0,
+      friction: 10000,
+      restitution: 0.4
     },
     goomba: {
       shape: "circle",
@@ -1374,8 +1644,8 @@ let entities = {
       shape: "circle",
       radius: 25,
       density: 1.5,
-      friction: 0.5,
-      restitution: 0.4
+      friction: 5,
+      restitution: 0
     }
   },
   // Crear una entidad a partir de su correspondiente cuerpo box2d, y annadirlo al mundo
