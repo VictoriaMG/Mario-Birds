@@ -118,6 +118,10 @@ let game = {
     game.lastUpdateTime = undefined;
     levels.load(game.currentLevel.number);
   },
+  backMain:function(){
+    game.ended= true;
+    game.showLevelScreen();
+  },
   startNextLevel: function() {
     loader.reset();
     game.stopBackgroundMusic();

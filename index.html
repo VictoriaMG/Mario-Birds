@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>Mario Birds</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="css/styles.css"
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="css/styles.css"
     />
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script
-      src="js/Box2dWeb-2.1.a.3.min.js"
-      type="text/javascript"
-      charset="utf-8"
+            src="js/Box2dWeb-2.1.a.3.min.js"
+            type="text/javascript"
+            charset="utf-8"
     ></script>
     <script src="js/game.js" type="text/javascript"></script>
-  </head>
+</head>
 
-  <body>
-    <div id="gamecontainer">
-      <!--TODO: AMPLIAR PANTALLA JUEGO-->
-      <canvas
-        class="gamelayer"
-        id="gamecanvas"
-        width="640"
-        height="480"
-      ></canvas>
-      <div class="gamelayer" id="scorescreen">
+<body>
+<div id="gamecontainer">
+    <!--TODO: AMPLIAR PANTALLA JUEGO-->
+    <canvas
+            class="gamelayer"
+            id="gamecanvas"
+            width="640"
+            height="480"
+    ></canvas>
+    <div class="gamelayer" id="scorescreen">
         <img
-          id="togglemusic"
-          src="img/icons/sound.png"
-          onclick="game.toggleBackgroundMusic()"
+                id="togglemusic"
+                src="img/icons/sound.png"
+                onclick="game.toggleBackgroundMusic()"
         />
-        <img src="img/icons/prev.png" onclick="game.showLevelScreen()" />
-        <!--TODO: AÑADIR GIF STAR.GIF a score-->
+        <img src="img/icons/replay.png" onclick="game.restartLevel()"/>
+        <!--Añadido boton seleccion niveles -->
+        <img src="img/icons/screen_levels.png" onclick="game.backMain();">
         <span>
-          <img id="scoreGif" src="img/icons/coin.gif" alt="Score" />
+          <img id="scoreGif" src="img/icons/coin.gif" alt="Score"/>
         </span>
         <span id="score"></span>
-      </div>
-      <div class="gamelayer" id="gamestartscreen">
+    </div>
+    <div class="gamelayer" id="gamestartscreen">
         <img
-          src="img/icons/play.png"
-          alt="Play Game"
-          onclick="game.showLevelScreen()"
+                src="img/icons/play.png"
+                alt="Play Game"
+                onclick="game.showLevelScreen()"
         />
-        <br />
-        <img src="img/icons/settings.png" alt="Settings" />
-      </div>
-      <div class="gamelayer" id="levelselectscreen"></div>
-      <div class="gamelayer" id="loadingscreen">
+        <br/>
+        <img src="img/icons/settings.png" alt="Settings"/>
+    </div>
+    <div class="gamelayer" id="levelselectscreen"></div>
+    <div class="gamelayer" id="loadingscreen">
         <div id="loadingmessage"></div>
-      </div>
-      <div class="gamelayer" id="endingscreen">
+    </div>
+    <div class="gamelayer" id="endingscreen">
         <p id="endingmessage">The Level Is Over</p>
         <p id="playcurrentlevel" onclick="game.restartLevel()">
-          <img src="img/icons/prev.png" /> Replay Current Level
+            <img src="img/icons/replay.png"/> Replay Current Level
         </p>
         <p id="playnextlevel" onclick="game.startNextLevel()">
-          <img src="img/icons/next.png" /> Play Next Level
+            <img src="img/icons/next.png"/> Play Next Level
         </p>
         <p id="showLevelScreen" onclick="game.showLevelScreen()">
-          <img src="img/icons/return.png" /> Return to Level Screen
+            <img src="img/icons/screen_levels.png"/> Return to Level Screen
         </p>
-      </div>
-      <canvas
-        id="debugcanvas"
-        width="1000"
-        height="480"
-        style="border:1px solid black;"
-      ></canvas>
     </div>
-  </body>
+    <canvas
+            id="debugcanvas"
+            width="1000"
+            height="480"
+            style="border:1px solid black;"
+    ></canvas>
+</div>
+</body>
 </html>
