@@ -1315,7 +1315,7 @@ let levels = {
                 // Estructuras
                 {
                     type: "block",
-                    name: "pipeVerde",
+                    name: "pipeAzul",
                     x: 500,
                     y: 350,
                     angle: 90,
@@ -1324,17 +1324,17 @@ let levels = {
                 },
                 {
                     type: "block",
-                    name: "pipeAzul",
-                    x: 520,
+                    name: "pipeVerde",
+                    x: 550,
                     y: 350,
                     angle: 90,
                     width: 130,
-                    height: 35
+                    height: 60
                 },
                 {
                     type: "block",
-                    name: "pipeVerde",
-                    x: 540,
+                    name: "pipeAzul",
+                    x: 600,
                     y: 350,
                     angle: 90,
                     width: 130,
@@ -1343,24 +1343,24 @@ let levels = {
                 {
                     type: "block",
                     name: "ladrillos",
-                    x: 525,
+                    x: 550,
                     y: 400,
-                    width: 150,
+                    width: 200,
                     height: 25
                 },
                 {
                     type: "block",
                     name: "ladrillos",
-                    x: 525,
+                    x: 550,
                     y: 300,
-                    width: 150,
+                    width: 200,
                     height: 25
                 },
                 // Villanos
                 {
                     type: "villain",
                     name: "florDorada",
-                    x: 520,
+                    x: 550,
                     y: 250,
                     calories: 200
                 },
@@ -1368,8 +1368,8 @@ let levels = {
                 {
                     type: "villain",
                     name: "florBasica",
-                    x: 650,
-                    y: 400,
+                    x: 625,
+                    y: 380,
                     calories: 200
                 },
                 {
@@ -2072,11 +2072,11 @@ let levels = {
                     calories: 590
                 },
                 {
-                     type: "villain",
-                     name: "Spiked_Goomba",
+                    type: "villain",
+                    name: "Spiked_Goomba",
                     x: 700,
                     y: 175,
-                     calories: 690
+                    calories: 690
                 },
                 //Heroes
                 {
@@ -2121,7 +2121,7 @@ let levels = {
                 {
                     type: "block",
                     name: "pipeVerde",
-                    x: 550,
+                    x: 500,
                     y: 350,
                     angle: 90,
                     width: 100,
@@ -2148,8 +2148,8 @@ let levels = {
                 // Villanos
                 {
                     type: "villain",
-                    name: "bonesyBoss",
-                    x: 550,
+                    name: "boss",
+                    x: 500,
                     y: 300,
                     calories: 150000
                 },
@@ -2389,10 +2389,10 @@ let entities = {
             friction: 0.5,
             restitution: 0.7,
         },
-        "bonesyBoss": {
+        boss: {
             shape: "rectangle",
             fullHealth: 1500,
-            width: 100,
+            width: 200,
             height: 150,
             density: 1,
             friction: 0.2,
@@ -2473,9 +2473,11 @@ let entities = {
             case "villain": // Pueden ser circulos o rectangulos
                 entity.health = definition.fullHealth;
                 entity.fullHealth = definition.fullHealth;
-                entity.sprite = loader.loadImage(
+                let sprite = loader.loadImage(
                     "img/entities/" + entity.name + ".png"
                 );
+                if (sprite.src)
+                    entity.sprite = sprite;
                 entity.shape = definition.shape;
                 entity.bounceSound = game.bounceSound;
                 if (definition.shape === "circle") {
@@ -2728,7 +2730,11 @@ let loader = {
         $("#loadingscreen").show();
         const image = new Image();
         image.src = url;
+        console.debug("Trying to get image for url " + url, image);
         image.onload = loader.itemLoaded;
+        image.onerror = function () {
+            console.error("Error loading Image with src: " + url);
+        };
         return image;
     },
     soundFileExtn: ".ogg",
