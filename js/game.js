@@ -2389,7 +2389,7 @@ let entities = {
             friction: 0.5,
             restitution: 0.7,
         },
-        boss: {
+        "boss": {
             shape: "rectangle",
             fullHealth: 1500,
             width: 200,
