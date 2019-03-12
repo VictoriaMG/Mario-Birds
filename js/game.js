@@ -1979,26 +1979,53 @@ let levels = {
                 {
                     type: "block",
                     name: "pipeAzul",
-                    x: 820,
-                    y: 350,
+                    x: 800,
+                    y: 400,
                     angle: 90,
                     width: 100,
-                    height: 25
+                    height: 40
                 },
                 {
                     type: "block",
                     name: "pipeVerde",
-                    x: 720,
-                    y: 350,
+                    x: 700,
+                    y: 400,
                     angle: 90,
                     width: 100,
-                    height: 50
+                    height: 60
                 },
                 {
                     type: "block",
                     name: "pipeAzul",
-                    x: 620,
-                    y: 350,
+                    x: 600,
+                    y: 400,
+                    angle: 90,
+                    width: 100,
+                    height: 40
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 500,
+                    y: 325,
+                    angle: 90,
+                    width: 300,
+                    height: 50
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 900,
+                    y: 325,
+                    angle: 90,
+                    width: 300,
+                    height: 50
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 650,
+                    y: 275,
                     angle: 90,
                     width: 100,
                     height: 25
@@ -2006,8 +2033,8 @@ let levels = {
                 {
                     type: "block",
                     name: "soloLadrillos",
-                    x: 670,
-                    y: 250,
+                    x: 750,
+                    y: 275,
                     angle: 90,
                     width: 100,
                     height: 25
@@ -2015,51 +2042,42 @@ let levels = {
                 {
                     type: "block",
                     name: "soloLadrillos",
-                    x: 770,
-                    y: 250,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
-                /*{
-                    type: "block",
-                    name: "soloLadrillos",
-                    x: 720,
+                    x: 700,
                     y: 200,
-                    width: 100,
+                    width: 150,
                     height: 25
-                },*/
+                },
                 {
                     type: "block",
                     name: "ladrillos",
-                    x: 670,
-                    y: 250,
+                    x: 650,
+                    y: 320,
                     width: 100,
                     height: 20
                 },
                 {
                     type: "block",
                     name: "ladrillos",
-                    x: 770,
-                    y: 250,
+                    x: 750,
+                    y: 320,
                     width: 100,
-                    height: 25
+                    height: 20
                 },
                 // Villanos
                 {
                     type: "villain",
                     name: "dryBone",
-                    x: 720,
+                    x: 700,
                     y: 260,
                     calories: 590
                 },
-                /* {
+                {
                      type: "villain",
                      name: "Spiked_Goomba",
-                     x: 720,
-                     y: 170,
+                    x: 700,
+                    y: 175,
                      calories: 690
-                 },*/
+                },
                 //Heroes
                 {
                     type: "hero",
@@ -2117,7 +2135,8 @@ let levels = {
                     angle: 90,
                     width: 400,
                     height: 50
-                }, {
+                },
+                {
                     type: "block",
                     name: "soloLadrillos",
                     x: 700,
