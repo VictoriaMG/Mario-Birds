@@ -3,7 +3,8 @@ let b2Vec2 = Box2D.Common.Math.b2Vec2;
 let b2BodyDef = Box2D.Dynamics.b2BodyDef;
 let b2Body = Box2D.Dynamics.b2Body;
 let b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
-let b2Fixture = Box2D.Dynamics.b2Fixture;
+// Comentado por no uso
+// let b2Fixture = Box2D.Dynamics.b2Fixture;
 let b2World = Box2D.Dynamics.b2World;
 let b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 let b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
@@ -52,10 +53,26 @@ let game = {
         mouse.init();
 
         // Cargar musica y efectos de sonido
-        // TODO: CAMBIAR MUSICA A PLAYAMINIGAME
-        //"Kindergarten" by Gurdonark
-        //http://ccmixter.org/files/gurdonark/26491 con licencia Creative Commons
-        game.backgroundMusic = loader.loadSound("audio/gurdonark-kindergarten");
+        // Musica PlayAMiniGame
+        game.backgroundMusic = loader.loadSound("audio/PlayAMiniGame");
+        $("#volumeSlider").slider({
+            value: 0.75,
+            step: 0.01,
+            range: 'min',
+            min: 0,
+            max: 1,
+            slide: function () {
+                const value = $("#volumeSlider").slider("value");
+                console.debug("Volume", value);
+                game.backgroundMusic.volume = (value);
+            },
+            change: function () {
+                const value = $("#volumeSlider").slider("value");
+                console.debug("Volume", value);
+                game.backgroundMusic.volume = (value);
+            }
+        });
+
         game.slingshotReleasedSound = loader.loadSound("audio/released");
         game.bounceSound = loader.loadSound("audio/bounce");
         game.breakSound = {
@@ -72,29 +89,25 @@ let game = {
         game.canvas = document.getElementById("gamecanvas");
         game.context = game.canvas.getContext("2d");
     },
-
+    settingsOpen: false,
+    toggleSettingsScreen: function () {
+        if (game.settingsOpen) {
+            $("#settingsscreen").hide();
+            game.settingsOpen = false;
+        } else {
+            $("#settingsscreen").show();
+            game.settingsOpen = true;
+        }
+    },
     startBackgroundMusic: function () {
-        const toggleImage = $("#togglemusic")[0];
+        game.backgroundMusic.loop = true;
         game.backgroundMusic.play();
-        toggleImage.src = "img/icons/sound.png";
     },
     stopBackgroundMusic: function () {
-        var toggleImage = $("#togglemusic")[0];
-        toggleImage.src = "img/icons/nosound.png";
         game.backgroundMusic.pause();
         game.backgroundMusic.currentTime = 0; // Resetear la cancion al segundo 0
     },
-    toggleBackgroundMusic: function () {
-        const toggleImage = $("#togglemusic")[0];
-        if (game.backgroundMusic.paused) {
-            game.backgroundMusic.play();
-            toggleImage.src = "img/icons/sound.png";
-        } else {
-            game.backgroundMusic.pause();
-            toggleImage.src = "img/icons/nosound.png";
-        }
-    },
-    showLevelScreen: function () {
+    showLevelSelectScreen: function () {
         // Codigo extra para limpiar el nivel anterior
         console.debug("Going back to level select");
         loader.reset();
@@ -105,7 +118,6 @@ let game = {
         game.score = 0;
         game.mode = "intro";
         game.offsetLeft = 0;
-        game.ended = false;
         game.stopBackgroundMusic();
         // Fin codigo extra
         $(".gamelayer").hide();
@@ -120,7 +132,7 @@ let game = {
     },
     backMain: function () {
         game.ended = true;
-        game.showLevelScreen();
+        game.showLevelSelectScreen();
     },
     startNextLevel: function () {
         loader.reset();
@@ -710,7 +722,7 @@ let levels = {
                 //Heroes
                 {
                     type: "hero",
-                    name: "strawberry",
+                    name: "shellAzul",
                     x: 30,
                     y: 415
                 },
@@ -758,8 +770,8 @@ let levels = {
                     type: "block",
                     name: "pipeVerde",
                     x: 400,
-                    y: 317.5,
-                    angle: 115,
+                    y: 350,
+                    angle: 135,
                     width: 90,
                     height: 20
                 },
@@ -786,7 +798,7 @@ let levels = {
                     type: "block",
                     name: "pipeVerde",
                     x: 470,
-                    y: 280,
+                    y: 320,
                     width: 85,
                     height: 20
                 },
@@ -814,7 +826,7 @@ let levels = {
                     type: "block",
                     name: "pipeVerde",
                     x: 570,
-                    y: 280,
+                    y: 320,
                     width: 85,
                     height: 20
                 },
@@ -822,7 +834,7 @@ let levels = {
                     type: "block",
                     name: "pipeVerde",
                     x: 640,
-                    y: 317.5,
+                    y: 350,
                     angle: 45,
                     width: 90,
                     height: 20
@@ -832,14 +844,14 @@ let levels = {
                     type: "villain",
                     name: "florAzul",
                     x: 570,
-                    y: 90,
+                    y: 300,
                     calories: 150
                 },
                 {
                     type: "villain",
                     name: "florAzul",
                     x: 470,
-                    y: 90,
+                    y: 300,
                     calories: 150
                 },
                 //Abajo
@@ -847,14 +859,14 @@ let levels = {
                     type: "villain",
                     name: "florDorada",
                     x: 570,
-                    y: 300,
+                    y: 390,
                     calories: 500
                 },
                 {
                     type: "villain",
                     name: "florDorada",
                     x: 470,
-                    y: 300,
+                    y: 390,
                     calories: 500
                 },
 
@@ -1174,8 +1186,7 @@ let levels = {
             ]
         },
         {
-            // Sexto nivel
-            //TODO: HUGO - HACER MAS AQUI
+            // Sexto nivel -- Acabado
             foreground: "desert-foreground",
             background: "clouds-background",
             entities: [
@@ -1210,7 +1221,25 @@ let levels = {
                 {
                     type: "block",
                     name: "soloLadrillos",
-                    x: 560,
+                    x: 540,
+                    y: 400,
+                    angle: 90,
+                    width: 130,
+                    height: 35
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 650,
+                    y: 400,
+                    angle: 90,
+                    width: 130,
+                    height: 35
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 700,
                     y: 400,
                     angle: 90,
                     width: 130,
@@ -1219,29 +1248,25 @@ let levels = {
                 {
                     type: "block",
                     name: "ladrillos",
-                    x: 530,
+                    x: 600,
                     y: 300,
-                    width: 150,
+                    width: 250,
                     height: 25
                 },
-
                 // Villanos
                 {
                     type: "villain",
                     name: "blooper",
-                    x: 530,
+                    x: 650,
                     y: 400,
-                    //Altura para que no salte el objeto!!
-                    // y: 345,
-                    calories: 200
+                    calories: 500
                 },
                 {
                     type: "villain",
                     name: "Fuzzy",
                     x: 600,
-                    //Altura para que no salte el objeto!!
                     y: 400,
-                    calories: 200
+                    calories: 1000
                 },
 
                 {
@@ -1266,7 +1291,6 @@ let levels = {
         },
         {
             // Septimo nivel
-            //TODO: HUGO - HACER
             foreground: "desert-foreground",
             background: "clouds-background",
             entities: [
@@ -1350,12 +1374,6 @@ let levels = {
                 },
                 {
                     type: "hero",
-                    name: "shellGreen",
-                    x: 80,
-                    y: 405
-                },
-                {
-                    type: "hero",
                     name: "shellAzul",
                     x: 80,
                     y: 405
@@ -1369,8 +1387,7 @@ let levels = {
             ]
         },
         {
-            // Octavo nivel
-            //TODO: HUGO - HACER
+            // Octavo nivel -- Acabado
             foreground: "desert-foreground",
             background: "clouds-background",
             entities: [
@@ -1387,7 +1404,7 @@ let levels = {
                     type: "ground",
                     name: "wood",
                     x: 185,
-                    y: 390,
+                    y: 400,
                     width: 30,
                     height: 80,
                     isStatic: true
@@ -1399,31 +1416,55 @@ let levels = {
                     x: 550,
                     y: 400,
                     angle: 90,
-                    width: 150,
+                    width: 100,
                     height: 50
                 },
                 {
                     type: "block",
                     name: "soloLadrillos",
                     x: 550,
-                    y: 250,
+                    y: 375,
+                    angle: 0,
+                    width: 200,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 430,
+                    y: 400,
                     angle: 90,
-                    width: 150,
-                    height: 50
+                    width: 200,
+                    height: 30
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 670,
+                    y: 400,
+                    angle: 90,
+                    width: 200,
+                    height: 30
                 },
                 // Villanos
                 {
                     type: "villain",
                     name: "florDorada",
-                    x: 520,
-                    y: 250,
+                    x: 550,
+                    y: 325,
                     calories: 200
                 },
-
                 {
                     type: "villain",
                     name: "florBasica",
-                    x: 650,
+                    x: 500,
+                    y: 400,
+                    calories: 200
+                },
+                {
+                    type: "villain",
+                    name: "florBasica",
+                    x: 600,
                     y: 400,
                     calories: 200
                 },
@@ -1473,15 +1514,6 @@ let levels = {
 
 
                 //Estructuras
-                {
-                    type: "block",
-                    name: "soloLadrillos",
-                    x: 420,
-                    y: 380,
-                    angle: 90,
-                    width: 100,
-                    height: 25
-                },
                 {
                     type: "block",
                     name: "soloLadrillos",
@@ -1575,7 +1607,7 @@ let levels = {
                     name: "Fuzzy",
                     x: 510,
                     //Altura para que no salte el objeto!!
-                    y: 250,
+                    y: 270,
                     calories: 200
                 },
                 {
@@ -1606,7 +1638,7 @@ let levels = {
                     type: "villain",
                     name: "blooper",
                     x: 360,
-                    y: 250,
+                    y: 270,
                     calories: 200
                 },
                 //Heroes
@@ -1628,8 +1660,6 @@ let levels = {
                     x: 140,
                     y: 405
                 }
-
-
             ]
         },
         {
@@ -1869,35 +1899,35 @@ let levels = {
                     type: "villain",
                     name: "dryBone",
                     x: 720,
-                    y: 205,
+                    y: 280,
                     calories: 590
                 },
                 {
                     type: "villain",
                     name: "dryBone",
                     x: 520,
-                    y: 205,
+                    y: 280,
                     calories: 590
                 },
                 {
                     type: "villain",
                     name: "bala",
                     x: 620,
-                    y: 205,
+                    y: 300,
                     calories: 690
                 },
                 {
                     type: "villain",
                     name: "pinkBirdo",
                     x: 720,
-                    y: 105,
+                    y: 175,
                     calories: 690
                 },
                 {
                     type: "villain",
                     name: "pinkBirdo",
                     x: 520,
-                    y: 105,
+                    y: 175,
                     calories: 690
                 },
                 {
@@ -1920,10 +1950,212 @@ let levels = {
                     y: 405
                 }
             ]
-        }
-        // TODO: HUGO HAZ AQUI DOS MÁS. LOS DOS ULTIMOS NIVELES --- > DIFICILES
-    ],
+        },
+        {
+            // Undecimo nivel -- Acabado
+            foreground: "desert-foreground",
+            background: "clouds-background",
+            entities: [
+                {
+                    type: "ground",
+                    name: "dirt",
+                    x: 500,
+                    y: 440,
+                    width: 1000,
+                    height: 20,
+                    isStatic: true
+                },
+                {
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 400,
+                    width: 20,
+                    height: 80,
+                    isStatic: true
+                },
 
+                //Estructuras
+                {
+                    type: "block",
+                    name: "pipeAzul",
+                    x: 820,
+                    y: 350,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 720,
+                    y: 350,
+                    angle: 90,
+                    width: 100,
+                    height: 50
+                },
+                {
+                    type: "block",
+                    name: "pipeAzul",
+                    x: 620,
+                    y: 350,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 670,
+                    y: 250,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 770,
+                    y: 250,
+                    angle: 90,
+                    width: 100,
+                    height: 25
+                },
+                /*{
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 720,
+                    y: 200,
+                    width: 100,
+                    height: 25
+                },*/
+                {
+                    type: "block",
+                    name: "ladrillos",
+                    x: 670,
+                    y: 250,
+                    width: 100,
+                    height: 20
+                },
+                {
+                    type: "block",
+                    name: "ladrillos",
+                    x: 770,
+                    y: 250,
+                    width: 100,
+                    height: 25
+                },
+                // Villanos
+                {
+                    type: "villain",
+                    name: "dryBone",
+                    x: 720,
+                    y: 260,
+                    calories: 590
+                },
+                /* {
+                     type: "villain",
+                     name: "Spiked_Goomba",
+                     x: 720,
+                     y: 170,
+                     calories: 690
+                 },*/
+                //Heroes
+                {
+                    type: "hero",
+                    name: "shellAzul",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shellOro",
+                    x: 140,
+                    y: 405
+                }
+            ]
+        },
+        {
+            // Duodecimo nivel -- Acabado
+            foreground: "desert-foreground",
+            background: "clouds-background",
+            entities: [
+                {
+                    type: "ground",
+                    name: "dirt",
+                    x: 500,
+                    y: 440,
+                    width: 1000,
+                    height: 20,
+                    isStatic: true
+                },
+                {
+                    type: "ground",
+                    name: "wood",
+                    x: 185,
+                    y: 390,
+                    width: 30,
+                    height: 80,
+                    isStatic: true
+                },
+
+                //Estructuras
+                {
+                    type: "block",
+                    name: "pipeVerde",
+                    x: 550,
+                    y: 350,
+                    angle: 90,
+                    width: 100,
+                    height: 60
+                },
+                {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 650,
+                    y: 200,
+                    angle: 90,
+                    width: 400,
+                    height: 50
+                }, {
+                    type: "block",
+                    name: "soloLadrillos",
+                    x: 700,
+                    y: 200,
+                    angle: 90,
+                    width: 400,
+                    height: 50
+                },
+                // Villanos
+                {
+                    type: "villain",
+                    name: "bonesyBoss",
+                    x: 550,
+                    y: 300,
+                    calories: 150000
+                },
+                //Heroes
+                {
+                    type: "hero",
+                    name: "shellGreen",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shellAzul",
+                    x: 80,
+                    y: 405
+                },
+                {
+                    type: "hero",
+                    name: "shellOro",
+                    x: 140,
+                    y: 405
+                }
+            ]
+        }
+    ],
     // Inicializar la pantalla de seleccion de nivel
     init: function () {
         let html = "";
@@ -1940,7 +2172,6 @@ let levels = {
             $("#levelselectscreen").hide();
         });
     },
-
     // Cargar datos e imagenes de un nivel en especifico
     load: function (number) {
         // Inicializar box2d
@@ -1989,6 +2220,12 @@ let entities = {
             friction: 0.4,
             restitution: 0.15
         },
+        superpipeVerde: {
+            fullHealth: 100000,
+            density: 100000,
+            friction: 0.01,
+            restitution: 0.01
+        },
         pipeAzul: {
             fullHealth: 200,
             density: 2.4,
@@ -2014,8 +2251,8 @@ let entities = {
             restitution: 0.4
         },
         dirt: {
-            density: 300.0,
-            friction: 10000,
+            density: 30.0,
+            friction: 10,
             restitution: 0.4
         },
         goomba: {
@@ -2132,6 +2369,15 @@ let entities = {
             density: 1,
             friction: 0.5,
             restitution: 0.7,
+        },
+        "bonesyBoss": {
+            shape: "rectangle",
+            fullHealth: 1500,
+            width: 100,
+            height: 150,
+            density: 1,
+            friction: 0.2,
+            restitution: 0.2,
         },
         "bala": {
             shape: "rectangle",
@@ -2338,6 +2584,27 @@ let box2d = {
                     entity2.bounceSound.play();
                 }
             }
+            if (entity1.type === "hero")
+            //console.debug("Body1 Vel x", body1.GetLinearVelocity());
+                if (entity2.type === "hero")
+                //console.debug("Body2 Vel x", body2.GetLinearVelocity());
+
+                    if (entity1.type === "hero" && Math.abs(body1.GetAngularVelocity().x) < 1) body1.SetLinearVelocity({
+                        x: (body1.GetAngularVelocity().x * 0.8),
+                        y: body1.GetLinearVelocity().y
+                    });
+            if (entity2.type === "hero" && Math.abs(body2.GetLinearVelocity().x) < 1) body2.SetLinearVelocity({
+                x: (body2.GetLinearVelocity().x * 0.8),
+                y: body2.GetLinearVelocity().y
+            });
+            if (Math.abs(body1.GetAngularVelocity().x) < 0.2) body1.SetLinearVelocity({
+                x: (body1.GetAngularVelocity().x * 0.8),
+                y: body1.GetLinearVelocity().y
+            });
+            if (Math.abs(body2.GetLinearVelocity().x) < 0.2) body2.SetLinearVelocity({
+                x: (body2.GetLinearVelocity().x * 0.8),
+                y: body2.GetLinearVelocity().y
+            });
         };
         box2d.world.SetContactListener(listener);
     },
@@ -2379,7 +2646,6 @@ let box2d = {
         body.CreateFixture(fixtureDef);
         return body;
     },
-
     createCircle: function (entity, definition) {
         const bodyDef = new b2BodyDef();
         if (entity.isStatic) {

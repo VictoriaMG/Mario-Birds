@@ -11,7 +11,14 @@
             media="screen"
             href="css/styles.css"
     />
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+            media="screen"
+            rel="stylesheet"
+            type="text/css"
+    />
     <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
     <script
             src="js/Box2dWeb-2.1.a.3.min.js"
             type="text/javascript"
@@ -22,7 +29,6 @@
 
 <body>
 <div id="gamecontainer">
-    <!--TODO: AMPLIAR PANTALLA JUEGO-->
     <canvas
             class="gamelayer"
             id="gamecanvas"
@@ -30,11 +36,7 @@
             height="480"
     ></canvas>
     <div class="gamelayer" id="scorescreen">
-        <img
-                id="togglemusic"
-                src="img/icons/sound.png"
-                onclick="game.toggleBackgroundMusic()"
-        />
+        <img id="opensettings" onclick="game.toggleSettingsScreen()" src="img/icons/settings-small.png"/>
         <img src="img/icons/replay.png" onclick="game.restartLevel()"/>
         <!--Añadido boton seleccion niveles -->
         <img src="img/icons/screen_levels.png" onclick="game.backMain();">
@@ -47,10 +49,10 @@
         <img
                 src="img/icons/play.png"
                 alt="Play Game"
-                onclick="game.showLevelScreen()"
+                onclick="game.showLevelSelectScreen()"
         />
         <br/>
-        <img src="img/icons/settings.png" alt="Settings"/>
+        <img alt="Settings" onclick="game.toggleSettingsScreen()" src="img/icons/settings.png"/>
     </div>
     <div class="gamelayer" id="levelselectscreen"></div>
     <div class="gamelayer" id="loadingscreen">
@@ -64,9 +66,18 @@
         <p id="playnextlevel" onclick="game.startNextLevel()">
             <img src="img/icons/next.png"/> Play Next Level
         </p>
-        <p id="showLevelScreen" onclick="game.showLevelScreen()">
+        <p id="showLevelScreen" onclick="game.showLevelSelectScreen()">
             <img src="img/icons/screen_levels.png"/> Return to Level Screen
         </p>
+    </div>
+    <div class="gamelayer" id="settingsscreen">
+        <div id="volume">
+            <i class="fa fa-volume-down"></i>
+            <span>Volumen</span>
+            <div id="volumeSlider"></div>
+            <i class="fa fa-volume-up"></i>
+        </div>
+        <img alt="Aceptar" id="acceptsettings" onclick="game.toggleSettingsScreen()" src="img/icons/accept.png">
     </div>
     <canvas
             id="debugcanvas"
