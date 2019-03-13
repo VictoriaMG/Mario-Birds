@@ -4,20 +4,20 @@ Juego realizado con HTML5 y JS basado en "Angry Birds" y con la temática del cl
 
 ## Explicación del proyecto
 
-Inicialmente obtuvimos el código de un juego en HTML5 que consistía en una imitación al clásico juego de móviles “Angry Birds”, pero con temática de Comida Saludable vs Comida Basura.
-Este juego estaba programado en JavaScript, ayudado por las librerías de jQuery y Box2D, usando principalmente el canvas de HTML5 como elemento donde renderizar el juego. 
+Inicialmente obtuvimos el código de un juego en HTML5 que consistía en una imitación al clásico juego de móviles “Angry Birds”, pero con temática de Comida Saludable vs Comida Basura.
+Este juego estaba programado en JavaScript, ayudado por las librerías de jQuery y Box2D, usando principalmente el canvas de HTML5 como elemento donde renderizar el juego. 
 
-Nuestro objetivo en esta práctica ha sido implementar la aplicación Froot wars y cambiar assets, héroes, villanos, añadir más niveles y añadir más funcionalidades.
+Nuestro objetivo en esta práctica ha sido implementar la aplicación Froot wars y cambiar assets, héroes, villanos, añadir más niveles y añadir más funcionalidades.
 
 ### Propuestas de modificacion
 
-* **Modernización del código**: Para ajustarse a las nuevas capacidades ofrecidas por el lenguaje a raíz de sus revisiones (ES2015, ES2016 ...)
-* **Adición de un menú de opciones**: Desde el cual poder controlar el volumen deseado dentro del juego pudiendo incluso silenciar el juego.
-* **Modificación de temática**: Modificación de la temática del juego a una elegida por nosotros, en este caso “Mario Bross” modificando todos los assets y todos los aspectos del juego según sean necesarios.
-* **Adición de niveles**: Añadir 12 niveles de dificultad
+* **Modernización del código**: Para ajustarse a las nuevas capacidades ofrecidas por el lenguaje a raíz de sus revisiones (ES2015, ES2016 ...)
+* **Adición de un menú de opciones**: Desde el cual poder controlar el volumen deseado dentro del juego pudiendo incluso silenciar el juego.
+* **Modificación de temática**: Modificación de la temática del juego a una elegida por nosotros, en este caso “Mario Bross” modificando todos los assets y todos los aspectos del juego según sean necesarios.
+* **Adición de niveles**: Añadir 12 niveles de dificultad
 
 
-### Installing
+### Instalación
 
 Para jugar a Mario Birds únicamente se debe descargar el proyecto alojado en Github y, a continuación, abrir el fichero index.
 
@@ -44,10 +44,10 @@ Esta sería la primera pantalla que veriamos al iniciarlo:
 ## Funcionalidades nuevas
 
 * **Menú de opciones**:
-Creamos un menú propio,en este nuevo menú, añadimos un slider para poder controlar el volumen. 
+Creamos un menú propio,en este nuevo menú, añadimos un slider para poder controlar el volumen. 
 
-* **Puntuación**:
-    * **Coin Mario**: se ha añadido un gif con la clásica moneda de Mario, además se ha añadido una funcionalidad extra al juego incluyendo un sonido en la moneda cada vez que se obtengan nuevos puntos a sumar.
+* **Puntuación**:
+    * **Coin Mario**: se ha añadido un gif con la clásica moneda de Mario, además se ha añadido una funcionalidad extra al juego incluyendo un sonido en la moneda cada vez que se obtengan nuevos puntos a sumar.
     * **Fuente Score**: Se ha modificado la fuente del score a “New Super Mario Font U”.
 
 ## Herramientas utilizadas
