@@ -17,7 +17,13 @@ Nuestro objetivo en esta práctica ha sido implementar la aplicación Froot wars
 * **Adición de niveles**: Añadir 12 niveles de dificultad
 
 
-### Instalación
+### Juego online
+
+Simplemente deberás entrar en la pagina del proyecto:
+
+https://victoriamg.github.io/Mario-Birds/
+
+### Jugar con el proyecto en local
 
 Para jugar a Mario Birds únicamente se debe descargar el proyecto alojado en Github y, a continuación, abrir el fichero index.
 
